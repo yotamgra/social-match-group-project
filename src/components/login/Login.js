@@ -14,7 +14,7 @@ import Signup from "../signup/Signup";
 
 const paperStyle = {
   padding: 20,
-  height: "73vh",
+//   height: "70vh",
   width: 300,
   margin: "0 auto",
 };
@@ -25,7 +25,7 @@ const buttonStyle = {
   margin: "8px 0",
 };
 
-const Login = () => {
+const Login = ({handleChange}) => {
   return (
     <Grid>
       <Paper  style={paperStyle}>
@@ -71,7 +71,7 @@ const Login = () => {
         </Typography>
         <Typography>
           Do you have an account?{" "}
-          <Link className="login-links" to="#">
+          <Link className="login-links"onClick={()=> handleChange(null,1)}>
             Sign Up
           </Link>
         </Typography>

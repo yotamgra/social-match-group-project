@@ -63,6 +63,8 @@ const LoginSignUp = () => {
             }}
           >
             <Tabs
+              variant="fullWidth" 
+              sx ={{flex:1}}
               value={value}
               onChange={handleChange}
               aria-label="basic tabs example"
@@ -72,7 +74,7 @@ const LoginSignUp = () => {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <Login />
+            <Login handleChange={handleChange} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Signup />
