@@ -13,7 +13,7 @@ import {
   Radio,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -70,12 +70,19 @@ const Signup = () => {
   function handleSubmit(e) {
     e.preventDefault();
     //check password and password confirm
+    if (passwordRef !== passwordConfirmRef) {
+      return setError("Passwords do not match");
+    }
     try{
       signup(nameRef,genderRef,emailRef,phoneRef,passwordRef)
+      navigate("/")
     } catch(err) {
       console.log(err);
     }
   }
+  useEffect(()=>{
+    genderRef = "female"
+    console.log("gender",genderRef);},[])
 
   return (
     <>

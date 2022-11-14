@@ -31,7 +31,8 @@ const Dashboard = () => {
   }
   return (
     <>
-      <Card className="card">
+    <h1>{currentUser.email}</h1>
+      {/* <Card className="card">
         <Card.Body>
           <h2 className="card text-center mb-4">Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -54,7 +55,7 @@ const Dashboard = () => {
         <Button variant="link" onClick={handleLogout}>
           Log Out
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };

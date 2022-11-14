@@ -25,14 +25,14 @@ export function AuthProvider({ children }) {
     );
     setCurrentUser(userCredential.user);
     const collectionRef = collection(db, "users");
-
+    
+    console.log("gender", gender);
     await addDoc(collectionRef, {
       name,
       userId: userCredential.user.uid,
       gender,
       phone
     });
-    console.log("currentUser", currentUser);
   }
 
   async function login(email, password) {
