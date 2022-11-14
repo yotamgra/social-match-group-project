@@ -13,11 +13,25 @@ import {
   Radio,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import React, { useState, useRef } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  let nameRef = useRef();
+  let genderRef = useRef();
+  let emailRef = useRef();
+  let phoneRef = useRef();
+  let passwordRef = useRef();
+  let passwordConfirmRef = useRef();
+  const { signup, currentUser } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const paperStyle = {
     padding: "20px",
-    
+
     width: 300,
     margin: "0 auto",
   };
@@ -30,6 +44,38 @@ const Signup = () => {
   const marginTop = {
     marginTop: 10,
   };
+
+  function handleNameChange(e) {
+    nameRef = e.target.value;
+  }
+  function handleGenderChange(e) {
+    genderRef = e.target.value;
+  }
+  function handleEmailChange(e) {
+    emailRef = e.target.value;
+  }
+  
+  function handelPhoneChange(e) {
+    phoneRef = e.target.value;
+  }
+  
+  function handlePasswordChange(e) {
+    passwordRef = e.target.value;
+  }
+  
+  function handlePasswordConfirmChange(e) {
+    passwordConfirmRef = e.target.value;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    //check password and password confirm
+    try{
+      signup(nameRef,genderRef,emailRef,phoneRef,passwordRef)
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -44,13 +90,14 @@ const Signup = () => {
               Please fill this form to create an account!
             </Typography>
           </Grid>
-          <form>
+          <form onSubmit={handleSubmit}>
             <TextField
               label="Name"
               placeholder="Enter your name"
               variant="standard"
               fullWidth
               required
+              onChange={handleNameChange}
             >
               {" "}
             </TextField>
@@ -61,9 +108,9 @@ const Signup = () => {
                 defaultValue="female"
                 name="radio-buttons-group"
                 style={{ display: "initial" }}
+                onChange={handleGenderChange}
               >
                 <FormControlLabel
-                
                   value="female"
                   control={<Radio />}
                   label="Female"
@@ -88,14 +135,16 @@ const Signup = () => {
               required
               type="email"
               style={{}}
+              onChange={handleEmailChange}
             >
               {" "}
             </TextField>
             <TextField
-              label="Phon Number"
-              placeholder="Enter your phon number"
+              label="Phone Number"
+              placeholder="Enter your phone number"
               variant="standard"
               fullWidth
+              onChange={handelPhoneChange}
             >
               {" "}
             </TextField>
@@ -106,6 +155,7 @@ const Signup = () => {
               fullWidth
               required
               type="password"
+              onChange={handlePasswordChange}
             >
               {" "}
             </TextField>
@@ -116,6 +166,7 @@ const Signup = () => {
               fullWidth
               required
               type="password"
+              onChange={handlePasswordConfirmChange}
             >
               {" "}
             </TextField>
