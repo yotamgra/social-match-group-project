@@ -18,7 +18,7 @@ const LoginSignUp = () => {
   //.............................................................................from MUI =>
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -66,7 +66,7 @@ const LoginSignUp = () => {
               variant="fullWidth" 
               sx ={{flex:1}}
               value={value}
-              onChange={handleChange}
+              onChange={handleTabChange}
               aria-label="basic tabs example"
             >
               <Tab label="Login" {...a11yProps(0)} />
@@ -74,7 +74,7 @@ const LoginSignUp = () => {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <Login handleChange={handleChange} />
+            <Login handleTabChange={handleTabChange} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Signup />

@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   let nameRef = useRef();
+
   let genderRef = useRef();
   let emailRef = useRef();
   let phoneRef = useRef();
@@ -48,21 +49,22 @@ const Signup = () => {
   function handleNameChange(e) {
     nameRef = e.target.value;
   }
+
   function handleGenderChange(e) {
     genderRef = e.target.value;
   }
   function handleEmailChange(e) {
     emailRef = e.target.value;
   }
-  
+
   function handelPhoneChange(e) {
     phoneRef = e.target.value;
   }
-  
+
   function handlePasswordChange(e) {
     passwordRef = e.target.value;
   }
-  
+
   function handlePasswordConfirmChange(e) {
     passwordConfirmRef = e.target.value;
   }
@@ -73,16 +75,17 @@ const Signup = () => {
     if (passwordRef !== passwordConfirmRef) {
       return setError("Passwords do not match");
     }
-    try{
-      signup(nameRef,genderRef,emailRef,phoneRef,passwordRef)
-      navigate("/")
-    } catch(err) {
+    try {
+      signup(nameRef, genderRef, emailRef, phoneRef, passwordRef);
+      navigate("/");
+    } catch (err) {
       console.log(err);
     }
   }
-  useEffect(()=>{
-    genderRef = "female"
-    console.log("gender",genderRef);},[])
+  useEffect(() => {
+    genderRef = "female";
+    console.log("gender", genderRef);
+  }, []);
 
   return (
     <>
@@ -108,6 +111,7 @@ const Signup = () => {
             >
               {" "}
             </TextField>
+
             <FormControl style={marginTop}>
               <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
               <RadioGroup

@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LoginSignUp from "./components/loginSignUp/LoginSignUp";
 import { AuthProvider } from "../src/contexts/AuthContext";
-import { Dashboard } from "@mui/icons-material";
+import  Dashboard  from "../src/components/dashboard/Dashboard";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 
 function App() {
