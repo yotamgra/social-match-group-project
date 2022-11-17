@@ -9,30 +9,29 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
-import {
-  addDoc,
-  getDocs,
-  collection,
-  serverTimestamp,
-} from "firebase/firestore";
+import { addDoc, getDocs, collection } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 
 import { db } from "../../firebase";
 
 const NewPost = () => {
+  const { createNewPost } = useAuth();
   const [newPost, setNewPost] = useState("");
+ 
   const [photo, setPhoto] = useState(null);
 
-  const postsCollection = collection(db, "posts");
   // const photoRef = ref(storage, "images");
-
-  const createPost = async () => {
-    await addDoc(postsCollection, {
-      newPost,
-      time: serverTimestamp(),
-    });
-  };
+ 
+  async function handleSubmitPost() {
+    try {
+      console.log("newPost in newpost", newPost);
+      createNewPost(newPost);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   // const uploadPhoto = () => {
   //   if (photo === null) return;
@@ -48,7 +47,7 @@ const NewPost = () => {
         <Container sx={{ display: "flex", flexDirection: "row" }}>
           <TextField
             color="warning"
-            onChange={(event) => setNewPost(event.target.value)}
+            onChange={(e)=>setNewPost(e.target.value)}
             id="outlined-basic"
             label="New Post"
             variant="outlined"
@@ -78,7 +77,7 @@ const NewPost = () => {
         variant="contained"
         disableElevation
         endIcon={<KeyboardArrowRight />}
-        onClick={createPost}
+        onClick={handleSubmitPost}
       >
         SUBMIT
       </Button>

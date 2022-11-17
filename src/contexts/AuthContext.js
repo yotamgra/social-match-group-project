@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const AuthContext = React.createContext();
 
@@ -16,6 +16,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [newPost, setNewPost] = useState("");
 
   async function signup(name, gender, email, phone, password) {
     const userCredential = await createUserWithEmailAndPassword(
@@ -38,9 +39,22 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
+
   async function logout() {
     return await signOut(auth);
   }
+
+  async function createNewPost(newPost){
+    console.log("newPost",newPost);
+    const postsCollection = collection(db, "posts");
+    await addDoc(postsCollection, {
+      newPost,
+      time: serverTimestamp(),
+      userId: currentUser.uid
+    })
+  }
+
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -55,6 +69,10 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
+    createNewPost,
+    newPost,
+    setNewPost
+
   };
   return (
     <AuthContext.Provider value={value}>
