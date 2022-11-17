@@ -1,30 +1,31 @@
 import { useEffect } from "react";
+import Navbar from "../navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import NewPost from "../newpost/NewPost";
 
 const Dashboard = () => {
   const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
 
-  
   async function handleLogout() {
-   
-
     try {
       await logout();
       navigate("/login-signup");
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }
 
   console.log("Dashboard");
-  return ( 
+  return (
     <>
-    <h1>hello</h1>
-    <button onClick={handleLogout}>Log out</button>
+      <Navbar />
+      <NewPost />
+
+      <button onClick={handleLogout}>Log out</button>
     </>
-   );
-}
- 
+  );
+};
+
 export default Dashboard;
