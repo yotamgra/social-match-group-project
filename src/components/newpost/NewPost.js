@@ -18,14 +18,14 @@ import {
 } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 
-import { db, storage } from "../firebase/firebase";
+import { db } from "../../firebase";
 
 const NewPost = () => {
   const [newPost, setNewPost] = useState("");
   const [photo, setPhoto] = useState(null);
 
   const postsCollection = collection(db, "posts");
-  const photoRef = ref(storage, "images");
+  // const photoRef = ref(storage, "images");
 
   const createPost = async () => {
     await addDoc(postsCollection, {
@@ -34,13 +34,13 @@ const NewPost = () => {
     });
   };
 
-  const uploadPhoto = () => {
-    if (photo === null) return;
+  // const uploadPhoto = () => {
+  //   if (photo === null) return;
 
-    uploadBytes(photoRef, photo).then(() => {
-      alert("Photo uploaded");
-    });
-  };
+  //   uploadBytes(photoRef, photo).then(() => {
+  //     alert("Photo uploaded");
+  //   });
+  // };
 
   return (
     <Card sx={{ mt: 3, mb: 5 }}>
