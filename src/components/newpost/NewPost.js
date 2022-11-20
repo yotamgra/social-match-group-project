@@ -15,9 +15,10 @@ import { addDoc, getDocs, collection } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 
 import { db } from "../../firebase";
+import { usePosts } from "../../contexts/PostsContext";
 
 const NewPost = () => {
-  const { createNewPost } = useAuth();
+  const { createNewPost } = usePosts();
   const [newPost, setNewPost] = useState("");
  
   const [photo, setPhoto] = useState(null);

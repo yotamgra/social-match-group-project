@@ -59,38 +59,8 @@ export function AuthProvider({ children }) {
     return await signOut(auth);
   }
 
-  async function createNewPost(newPost) {
-    console.log("newPost", newPost);
-    await addDoc(postsCollection, {
-      description: newPost,
-      time: serverTimestamp(),
-      userId: currentUser.uid,
-      userEmail: currentUser.email,
-    });
  
-  }
-
-  async function getCurrentUserPosts() {
-    const q = query(postsCollection, "userId", "===", currentUser.uid);
-  }
-
-  async function getAllPosts() {
-    // const q = query(postsCollection, orderBy("time", "desc"));
-    // const unsubscribe = onSnapshot(q, (snapshot) => {
-    //   setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // });
-    // return unsubscribe;
-    const q = query(postsCollection,where("userId", "!=", "-1"));
-    const docSnap = await getDocs(q)
-    const postsArray = []
-    docSnap.forEach((doc) => {
-      postsArray.push(doc.data());
-    });
-    // console.log(postsArray);
-    setPosts([...postsArray]);
-  }
-
-  // , where("userId", "==", currentUser.uid)
+ 
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -105,11 +75,11 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
-    createNewPost,
-    newPost,
-    setNewPost,
-    getAllPosts,
-    posts,
+    // createNewPost,
+    // newPost,
+    // setNewPost,
+    // getAllPosts,
+    // posts,
   };
   return (
     <AuthContext.Provider value={value}>

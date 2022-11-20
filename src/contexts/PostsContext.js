@@ -11,9 +11,10 @@ import {
   doc,
   getDoc,
   getDocs,
-  where
+  where,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
+import { useAuth } from "./AuthContext";
 
 const PostsContext = React.createContext();
 
@@ -21,15 +22,13 @@ export function usePosts() {
   return useContext(PostsContext);
 }
 
-export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
+export function PostsProvider({ children }) {
+  const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [newPost, setNewPost] = useState("");
   const [posts, setPosts] = useState([]);
 
   const postsCollection = collection(db, "posts");
-
-  
 
   async function createNewPost(newPost) {
     console.log("newPost", newPost);
@@ -52,22 +51,21 @@ export function AuthProvider({ children }) {
     //   setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     // });
     // return unsubscribe;
-    const q = query(postsCollection, where("userId", "==", currentUser.uid));
+    const q = query(postsCollection,where("userId", "!=", "-1"));
     const docSnap = await getDocs(q)
+    const postsArray = []
     docSnap.forEach((doc) => {
-      setPosts(doc.data());
+      postsArray.push(doc.data());
     });
+    // console.log(postsArray);
+    setPosts([...postsArray]);
   }
 
-  useEffect(() => {
-  
-  }, []);
+
+
+  useEffect(() => {}, []);
 
   const value = {
-    currentUser,
-    signup,
-    login,
-    logout,
     createNewPost,
     newPost,
     setNewPost,
@@ -76,7 +74,7 @@ export function AuthProvider({ children }) {
   };
   return (
     <PostsContext.Provider value={value}>
-      {!loading && children}
+      { children}
     </PostsContext.Provider>
   );
 }
