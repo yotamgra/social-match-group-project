@@ -45,6 +45,7 @@ const NewPost = () => {
         <Box display="flex" justifyContent="center">
           <Button
             color="warning"
+            size="medium"
             sx={{ mb: 1 }}
             variant="contained"
             endIcon={<KeyboardArrowRight />}

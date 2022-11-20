@@ -22,8 +22,6 @@ const Dashboard = () => {
     <>
       <Navbar />
       <NewPost />
-
-      <button onClick={handleLogout}>Log out</button>
     </>
   );
 };
