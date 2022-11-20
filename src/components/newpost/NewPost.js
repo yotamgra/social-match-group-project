@@ -17,6 +17,8 @@ import { ref, uploadBytes } from "firebase/storage";
 
 import { db } from "../../firebase";
 import { usePosts } from "../../contexts/PostsContext";
+import IntrestsTags from "./IntrestsTags";
+import CustomizedHook from "./IntrestsTags";
 
 const NewPost = () => {
   const { createNewPost } = usePosts();
@@ -74,19 +76,8 @@ const NewPost = () => {
           </InputAdornment>
         }
       /> */}
-      {userIntrestsList.map((item,index) => (
-        <p key={index}>{item}</p>
-      ))}
-      <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={intrestsList}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Movie" />}
-      onChange={(event, newValue) => {
-        setUserIntrestsList([...userIntrestsList,newValue]);
-      }}
-    />
+     
+      {IntrestsTags()}
 
       <Button
         color="warning"
