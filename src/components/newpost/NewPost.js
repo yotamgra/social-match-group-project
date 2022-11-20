@@ -26,7 +26,7 @@ const NewPost = () => {
  
   async function handleSubmitPost() {
     try {
-      console.log("newPost in newpost", newPost);
+      
       createNewPost(newPost);
     } catch (err) {
       console.log(err);
