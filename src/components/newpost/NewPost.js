@@ -1,5 +1,6 @@
 import { AddAPhoto, KeyboardArrowRight } from "@mui/icons-material";
 import {
+  Autocomplete,
   Button,
   Card,
   CardContent,
@@ -20,6 +21,8 @@ import { usePosts } from "../../contexts/PostsContext";
 const NewPost = () => {
   const { createNewPost } = usePosts();
   const [newPost, setNewPost] = useState("");
+  const [intrestsList, setIntrestsList] = useState(["Acting", "Art", "Baking", "Beatboxing", "Diving", "DJing", "Fashion", "Flying", "Karate", "Scuba Diving"]);
+  const [userIntrestsList, setUserIntrestsList] = useState([])
  
   const [photo, setPhoto] = useState(null);
 
@@ -71,6 +74,19 @@ const NewPost = () => {
           </InputAdornment>
         }
       /> */}
+      {userIntrestsList.map((item,index) => (
+        <p key={index}>{item}</p>
+      ))}
+      <Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={intrestsList}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Movie" />}
+      onChange={(event, newValue) => {
+        setUserIntrestsList([...userIntrestsList,newValue]);
+      }}
+    />
 
       <Button
         color="warning"
