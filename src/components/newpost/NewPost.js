@@ -1,5 +1,6 @@
 import { AddAPhoto, KeyboardArrowRight } from "@mui/icons-material";
 import {
+  Autocomplete,
   Button,
   Card,
   CardContent,
@@ -9,38 +10,44 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
-import {
-  addDoc,
-  getDocs,
-  collection,
-  serverTimestamp,
-} from "firebase/firestore";
+import { addDoc, getDocs, collection } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 
-import { db, storage } from "../firebase/firebase";
+import { db } from "../../firebase";
+import { usePosts } from "../../contexts/PostsContext";
+import IntrestsTags from "./IntrestsTags";
+
 
 const NewPost = () => {
-  const [newPost, setNewPost] = useState("");
+  const { createNewPost, newPost, setNewPost } = usePosts();
+  
+  
+
+ 
+
   const [photo, setPhoto] = useState(null);
 
-  const postsCollection = collection(db, "posts");
-  const photoRef = ref(storage, "images");
+  // const photoRef = ref(storage, "images");
 
-  const createPost = async () => {
-    await addDoc(postsCollection, {
-      newPost,
-      time: serverTimestamp(),
-    });
-  };
+  async function handleSubmitPost() {
+    try {
+      // setNewPost({...newPost, userIntrestsList})
+      console.log(newPost);
+      createNewPost();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-  const uploadPhoto = () => {
-    if (photo === null) return;
+  // const uploadPhoto = () => {
+  //   if (photo === null) return;
 
-    uploadBytes(photoRef, photo).then(() => {
-      alert("Photo uploaded");
-    });
-  };
+  //   uploadBytes(photoRef, photo).then(() => {
+  //     alert("Photo uploaded");
+  //   });
+  // };
 
   return (
     <Card sx={{ mt: 3, mb: 5 }}>
@@ -48,7 +55,7 @@ const NewPost = () => {
         <Container sx={{ display: "flex", flexDirection: "row" }}>
           <TextField
             color="warning"
-            onChange={(event) => setNewPost(event.target.value)}
+            onChange={(e) => setNewPost({...newPost,description: e.target.value})}
             id="outlined-basic"
             label="New Post"
             variant="outlined"
@@ -72,13 +79,15 @@ const NewPost = () => {
         }
       /> */}
 
+      <IntrestsTags />
+      {/* {console.log("inside new post",userIntrestsList)} */}
       <Button
         color="warning"
         sx={{ mb: 1 }}
         variant="contained"
         disableElevation
         endIcon={<KeyboardArrowRight />}
-        onClick={createPost}
+        onClick={handleSubmitPost}
       >
         SUBMIT
       </Button>

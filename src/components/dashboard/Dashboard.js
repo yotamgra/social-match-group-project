@@ -3,9 +3,10 @@ import Navbar from "../navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import NewPost from "../newpost/NewPost";
+import AllPosts from "../allPosts/AllPosts";
 
 const Dashboard = () => {
-  const { logout, currentUser } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -22,6 +23,7 @@ const Dashboard = () => {
     <>
       <Navbar />
       <NewPost />
+      <AllPosts />
 
       <button onClick={handleLogout}>Log out</button>
     </>
