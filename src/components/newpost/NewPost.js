@@ -1,5 +1,6 @@
 import { AddAPhoto, KeyboardArrowRight } from "@mui/icons-material";
 import {
+  Autocomplete,
   Button,
   Card,
   CardContent,
@@ -9,26 +10,29 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 
-import { addDoc, getDocs, collection } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
 
-import { db } from "../../firebase";
+
 import { usePosts } from "../../contexts/PostsContext";
+import IntrestsTags from "./IntrestsTags";
+
 
 const NewPost = () => {
-  const { createNewPost } = usePosts();
-  const [newPost, setNewPost] = useState("");
+  const { createNewPost, newPost, setNewPost } = usePosts();
+  
+  
+
  
+
   const [photo, setPhoto] = useState(null);
 
   // const photoRef = ref(storage, "images");
- 
+
   async function handleSubmitPost() {
     try {
-      
-      createNewPost(newPost);
+      // setNewPost({...newPost, userIntrestsList})
+      console.log(newPost);
+      createNewPost();
     } catch (err) {
       console.log(err);
     }
@@ -48,7 +52,7 @@ const NewPost = () => {
         <Container sx={{ display: "flex", flexDirection: "row" }}>
           <TextField
             color="warning"
-            onChange={(e)=>setNewPost(e.target.value)}
+            onChange={(e) => setNewPost({...newPost,description: e.target.value})}
             id="outlined-basic"
             label="New Post"
             variant="outlined"
@@ -72,6 +76,8 @@ const NewPost = () => {
         }
       /> */}
 
+      <IntrestsTags />
+      {/* {console.log("inside new post",userIntrestsList)} */}
       <Button
         color="warning"
         sx={{ mb: 1 }}

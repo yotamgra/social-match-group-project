@@ -15,7 +15,7 @@ import {
   doc,
   getDoc,
   getDocs,
-  where
+  where,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
 
@@ -30,22 +30,25 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [newPost, setNewPost] = useState("");
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
 
   const postsCollection = collection(db, "posts");
 
-  async function signup(name, gender, email, phone, password) {
+  async function signup( email, password) {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     setCurrentUser(userCredential.user);
+  }
+  async function createUserInfo(name, gender,phone) {
     const collectionRef = collection(db, "users");
 
     console.log("gender", gender);
     await addDoc(collectionRef, {
       name,
-      userId: userCredential.user.uid,
+      userId: currentUser.uid,
       gender,
       phone,
     });
@@ -58,9 +61,6 @@ export function AuthProvider({ children }) {
   async function logout() {
     return await signOut(auth);
   }
-
- 
- 
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -75,6 +75,7 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
+    createUserInfo
     // createNewPost,
     // newPost,
     // setNewPost,
