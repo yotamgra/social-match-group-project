@@ -148,8 +148,8 @@ const Listbox = styled("ul")(
 );
 
 export default function IntrestsTags() {
-  const { userIntrestsList, setUserIntrestsList, newPost, setNewPost  } = usePosts();
-  const arr = [];
+  const { newPost, setNewPost  } = usePosts();
+  
 
 
 
@@ -193,7 +193,7 @@ export default function IntrestsTags() {
             );
           })}
 
-          {/* {console.log(arr)} */}
+       
 
           <input {...getInputProps()} />
         </InputWrapper>

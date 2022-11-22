@@ -21,7 +21,7 @@ import IntrestsTags from "./IntrestsTags";
 
 
 const NewPost = () => {
-  const { createNewPost, userIntrestsList, setUserIntrestsList, newPost, setNewPost } = usePosts();
+  const { createNewPost, newPost, setNewPost } = usePosts();
   
   
 

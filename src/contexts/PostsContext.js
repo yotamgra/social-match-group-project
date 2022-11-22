@@ -25,10 +25,8 @@ export function usePosts() {
 export function PostsProvider({ children }) {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [userIntrestsList, setUserIntrestsList] = useState([]);
-  const [newPost, setNewPost] = useState({description:""});
+  const [newPost, setNewPost] = useState({ description: "" });
   const [posts, setPosts] = useState([]);
-
 
   const postsCollection = collection(db, "posts");
 
@@ -40,7 +38,6 @@ export function PostsProvider({ children }) {
       userId: currentUser.uid,
       userEmail: currentUser.email,
     });
- 
   }
 
   async function getCurrentUserPosts() {
@@ -53,17 +50,15 @@ export function PostsProvider({ children }) {
     //   setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     // });
     // return unsubscribe;
-    const q = query(postsCollection,where("userId", "!=", "-1"));
-    const docSnap = await getDocs(q)
-    const postsArray = []
+    const q = query(postsCollection, where("userId", "!=", "-1"));
+    const docSnap = await getDocs(q);
+    const postsArray = [];
     docSnap.forEach((doc) => {
       postsArray.push(doc.data());
     });
     // console.log(postsArray);
     setPosts([...postsArray]);
   }
-
-
 
   useEffect(() => {}, []);
 
@@ -73,12 +68,9 @@ export function PostsProvider({ children }) {
     setNewPost,
     getAllPosts,
     posts,
-    userIntrestsList, 
-    setUserIntrestsList
+   
   };
   return (
-    <PostsContext.Provider value={value}>
-      { children}
-    </PostsContext.Provider>
+    <PostsContext.Provider value={value}>{children}</PostsContext.Provider>
   );
 }
