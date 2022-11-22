@@ -10,12 +10,13 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 
-import { addDoc, getDocs, collection } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
 
+<<<<<<< HEAD
+
+=======
 import { db } from "../../firebase";
+>>>>>>> master
 import { usePosts } from "../../contexts/PostsContext";
 import IntrestsTags from "./IntrestsTags";
 

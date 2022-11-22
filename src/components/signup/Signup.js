@@ -11,11 +11,13 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
+  Alert,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { processFirebaseErrors } from "../../errors";
 
 const Signup = () => {
   let nameRef = useRef();
@@ -25,7 +27,7 @@ const Signup = () => {
   let phoneRef = useRef();
   let passwordRef = useRef();
   let passwordConfirmRef = useRef();
-  const { signup, currentUser } = useAuth();
+  const { signup, currentUser, createUserInfo } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -69,23 +71,29 @@ const Signup = () => {
     passwordConfirmRef = e.target.value;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     //check password and password confirm
     if (passwordRef !== passwordConfirmRef) {
       return setError("Passwords do not match");
     }
     try {
-      signup(nameRef, genderRef, emailRef, phoneRef, passwordRef);
+      setLoading(true);
+      await signup(emailRef, passwordRef);
+      await createUserInfo(nameRef, genderRef, phoneRef);
+      setLoading(false);
       navigate("/");
     } catch (err) {
-      console.log(err);
+      setLoading(false);
+      setError(processFirebaseErrors(err.message));
     }
   }
   useEffect(() => {
     genderRef = "female";
     console.log("gender", genderRef);
   }, []);
+
+  if (loading) return <div>loading...</div>;
 
   return (
     <>
@@ -96,6 +104,7 @@ const Signup = () => {
               <AddCircleOutlineIcon />
             </Avatar>
             <h2 style={headerStyle}>Sign Up</h2>
+            {error && <Alert severity="error">{error}</Alert>}
             <Typography variant="caption">
               Please fill this form to create an account!
             </Typography>

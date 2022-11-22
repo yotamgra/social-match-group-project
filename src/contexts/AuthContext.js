@@ -15,7 +15,7 @@ import {
   doc,
   getDoc,
   getDocs,
-  where
+  where,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
 
@@ -28,24 +28,27 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [newPost, setNewPost] = useState("");
-  const [posts, setPosts] = useState([]);
+ 
+  
+  
 
-  const postsCollection = collection(db, "posts");
+  
 
-  async function signup(name, gender, email, phone, password) {
+  async function signup( email, password) {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     setCurrentUser(userCredential.user);
+  }
+  async function createUserInfo(name, gender,phone) {
     const collectionRef = collection(db, "users");
 
     console.log("gender", gender);
     await addDoc(collectionRef, {
       name,
-      userId: userCredential.user.uid,
+      userId: currentUser.uid,
       gender,
       phone,
     });
@@ -58,39 +61,6 @@ export function AuthProvider({ children }) {
   async function logout() {
     return await signOut(auth);
   }
-
-  async function createNewPost(newPost) {
-    console.log("newPost", newPost);
-    await addDoc(postsCollection, {
-      description: newPost,
-      time: serverTimestamp(),
-      userId: currentUser.uid,
-      userEmail: currentUser.email,
-    });
- 
-  }
-
-  async function getCurrentUserPosts() {
-    const q = query(postsCollection, "userId", "===", currentUser.uid);
-  }
-
-  async function getAllPosts() {
-    // const q = query(postsCollection, orderBy("time", "desc"));
-    // const unsubscribe = onSnapshot(q, (snapshot) => {
-    //   setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // });
-    // return unsubscribe;
-    const q = query(postsCollection,where("userId", "!=", "-1"));
-    const docSnap = await getDocs(q)
-    const postsArray = []
-    docSnap.forEach((doc) => {
-      postsArray.push(doc.data());
-    });
-    // console.log(postsArray);
-    setPosts([...postsArray]);
-  }
-
-  // , where("userId", "==", currentUser.uid)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -105,11 +75,12 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
-    createNewPost,
-    newPost,
-    setNewPost,
-    getAllPosts,
-    posts,
+    createUserInfo
+    // createNewPost,
+    // newPost,
+    // setNewPost,
+    // getAllPosts,
+    // posts,
   };
   return (
     <AuthContext.Provider value={value}>
