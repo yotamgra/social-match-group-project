@@ -4,7 +4,9 @@ import { useAutocomplete } from "@mui/base/AutocompleteUnstyled";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
-import { autocompleteClasses } from "@mui/material/Autocomplete";
+import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
+import { usePosts } from "../../contexts/PostsContext";
+import { TextField } from "@mui/material";
 
 const Root = styled("div")(
   ({ theme }) => `
@@ -30,16 +32,13 @@ const InputWrapper = styled("div")(
   padding: 1px;
   display: flex;
   flex-wrap: wrap;
-
   &:hover {
     border-color: ${theme.palette.mode === "dark" ? "#177ddc" : "#40a9ff"};
   }
-
   &.focused {
     border-color: ${theme.palette.mode === "dark" ? "#177ddc" : "#40a9ff"};
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   }
-
   & input {
     background-color: ${theme.palette.mode === "dark" ? "#141414" : "#fff"};
     color: ${
@@ -91,18 +90,15 @@ const StyledTag = styled(Tag)(
   padding: 0 4px 0 10px;
   outline: 0;
   overflow: hidden;
-
   &:focus {
     border-color: ${theme.palette.mode === "dark" ? "#177ddc" : "#40a9ff"};
     background-color: ${theme.palette.mode === "dark" ? "#003b57" : "#e6f7ff"};
   }
-
   & span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-
   & svg {
     font-size: 12px;
     cursor: pointer;
@@ -124,33 +120,26 @@ const Listbox = styled("ul")(
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 1;
-
   & li {
     padding: 5px 12px;
     display: flex;
-
     & span {
       flex-grow: 1;
     }
-
     & svg {
       color: transparent;
     }
   }
-
   & li[aria-selected='true'] {
     background-color: ${theme.palette.mode === "dark" ? "#2b2b2b" : "#fafafa"};
     font-weight: 600;
-
     & svg {
       color: #1890ff;
     }
   }
-
   & li.${autocompleteClasses.focused} {
     background-color: ${theme.palette.mode === "dark" ? "#003b57" : "#e6f7ff"};
     cursor: pointer;
-
     & svg {
       color: currentColor;
     }
@@ -159,6 +148,14 @@ const Listbox = styled("ul")(
 );
 
 export default function IntrestsTags() {
+  const { userIntrestsList, setUserIntrestsList } = usePosts();
+  const arr = [];
+
+//   React.useEffect(()=>{
+//      setUserIntrestsList(value);
+
+//   },[value])
+
   const {
     getRootProps,
     getInputLabelProps,
@@ -172,19 +169,54 @@ export default function IntrestsTags() {
     setAnchorEl,
   } = useAutocomplete({
     id: "customized-hook-demo",
-    defaultValue: [top100Films[1]],
+    // defaultValue: [top100Films[1]],
     multiple: true,
     options: top100Films,
     getOptionLabel: (option) => option,
   });
+
+//   const [autoValue, setAutoValue] = React.useState(top100Films[0]);
+//   const [inputValue, setInputValue] = React.useState('');
+
+//   return (
+//     <div>
+//       <div>{`value: ${autoValue !== null ? `'${value}'` : 'null'}`}</div>
+//       <div>{`inputValue: '${inputValue}'`}</div>
+//       <br />
+//       <Autocomplete
+//         value={autoValue}
+//         onChange={(event, newValue) => {
+//           console.log({event, newValue});
+//         }}
+//         inputValue={inputValue}
+//         onInputChange={(event, newInputValue) => {
+//           setInputValue(newInputValue);
+//         }}
+//         id="hobby-selection"
+//         options={top100Films}
+//         sx={{ width: 300 }}
+//         renderInput={(params) => <TextField {...params} label="Controllable" />}
+//       />
+//     </div>
+//   );
+React.useEffect(()=>{
+  setUserIntrestsList(value)
+},[value])
 
   return (
     <Root>
       <div {...getRootProps()}>
         <Label {...getInputLabelProps()}>Intrests</Label>
         <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
+            {/* {console.log(value)} */}
           {value.map((option, index) => {
-            console.log(option);
+            // console.log(option);
+            arr.push(option);
+            // setUserIntrestsList((markedInterests) => [
+            //   ...markedInterests,
+            //   option,
+            // ]);
+
             return (
               <StyledTag
                 label={option}
@@ -193,6 +225,8 @@ export default function IntrestsTags() {
               />
             );
           })}
+
+          {/* {console.log(arr)} */}
 
           <input {...getInputProps()} />
         </InputWrapper>

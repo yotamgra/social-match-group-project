@@ -28,6 +28,8 @@ export function PostsProvider({ children }) {
   const [newPost, setNewPost] = useState("");
   const [posts, setPosts] = useState([]);
 
+  const [userIntrestsList, setUserIntrestsList] = useState([]);
+
   const postsCollection = collection(db, "posts");
 
   async function createNewPost(newPost) {
@@ -71,6 +73,8 @@ export function PostsProvider({ children }) {
     setNewPost,
     getAllPosts,
     posts,
+    userIntrestsList, 
+    setUserIntrestsList
   };
   return (
     <PostsContext.Provider value={value}>

@@ -18,21 +18,21 @@ import { ref, uploadBytes } from "firebase/storage";
 import { db } from "../../firebase";
 import { usePosts } from "../../contexts/PostsContext";
 import IntrestsTags from "./IntrestsTags";
-import CustomizedHook from "./IntrestsTags";
+
 
 const NewPost = () => {
-  const { createNewPost } = usePosts();
+  const { createNewPost, userIntrestsList, setUserIntrestsList } = usePosts();
   const [newPost, setNewPost] = useState("");
-  const [intrestsList, setIntrestsList] = useState(["Acting", "Art", "Baking", "Beatboxing", "Diving", "DJing", "Fashion", "Flying", "Karate", "Scuba Diving"]);
-  const [userIntrestsList, setUserIntrestsList] = useState([])
+  
+
  
+
   const [photo, setPhoto] = useState(null);
 
   // const photoRef = ref(storage, "images");
- 
+
   async function handleSubmitPost() {
     try {
-      
       createNewPost(newPost);
     } catch (err) {
       console.log(err);
@@ -53,7 +53,7 @@ const NewPost = () => {
         <Container sx={{ display: "flex", flexDirection: "row" }}>
           <TextField
             color="warning"
-            onChange={(e)=>setNewPost(e.target.value)}
+            onChange={(e) => setNewPost(e.target.value)}
             id="outlined-basic"
             label="New Post"
             variant="outlined"
@@ -76,9 +76,9 @@ const NewPost = () => {
           </InputAdornment>
         }
       /> */}
-     
-      {IntrestsTags()}
 
+      <IntrestsTags />
+      {console.log("inside new post",userIntrestsList)}
       <Button
         color="warning"
         sx={{ mb: 1 }}
