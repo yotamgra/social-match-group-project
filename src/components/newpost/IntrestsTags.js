@@ -148,13 +148,10 @@ const Listbox = styled("ul")(
 );
 
 export default function IntrestsTags() {
-  const { userIntrestsList, setUserIntrestsList } = usePosts();
+  const { userIntrestsList, setUserIntrestsList, newPost, setNewPost  } = usePosts();
   const arr = [];
 
-//   React.useEffect(()=>{
-//      setUserIntrestsList(value);
 
-//   },[value])
 
   const {
     getRootProps,
@@ -170,53 +167,23 @@ export default function IntrestsTags() {
   } = useAutocomplete({
     id: "customized-hook-demo",
     // defaultValue: [top100Films[1]],
+    
     multiple: true,
     options: top100Films,
     getOptionLabel: (option) => option,
   });
 
-//   const [autoValue, setAutoValue] = React.useState(top100Films[0]);
-//   const [inputValue, setInputValue] = React.useState('');
 
-//   return (
-//     <div>
-//       <div>{`value: ${autoValue !== null ? `'${value}'` : 'null'}`}</div>
-//       <div>{`inputValue: '${inputValue}'`}</div>
-//       <br />
-//       <Autocomplete
-//         value={autoValue}
-//         onChange={(event, newValue) => {
-//           console.log({event, newValue});
-//         }}
-//         inputValue={inputValue}
-//         onInputChange={(event, newInputValue) => {
-//           setInputValue(newInputValue);
-//         }}
-//         id="hobby-selection"
-//         options={top100Films}
-//         sx={{ width: 300 }}
-//         renderInput={(params) => <TextField {...params} label="Controllable" />}
-//       />
-//     </div>
-//   );
-React.useEffect(()=>{
-  setUserIntrestsList(value)
-},[value])
+  React.useEffect(() => {
+    setNewPost({...newPost, intrestsList: value});
+  }, [value]);
 
   return (
     <Root>
       <div {...getRootProps()}>
         <Label {...getInputLabelProps()}>Intrests</Label>
         <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
-            {/* {console.log(value)} */}
           {value.map((option, index) => {
-            // console.log(option);
-            arr.push(option);
-            // setUserIntrestsList((markedInterests) => [
-            //   ...markedInterests,
-            //   option,
-            // ]);
-
             return (
               <StyledTag
                 label={option}

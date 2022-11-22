@@ -25,17 +25,17 @@ export function usePosts() {
 export function PostsProvider({ children }) {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [newPost, setNewPost] = useState("");
+  const [userIntrestsList, setUserIntrestsList] = useState([]);
+  const [newPost, setNewPost] = useState({description:""});
   const [posts, setPosts] = useState([]);
 
-  const [userIntrestsList, setUserIntrestsList] = useState([]);
 
   const postsCollection = collection(db, "posts");
 
-  async function createNewPost(newPost) {
+  async function createNewPost() {
     console.log("newPost", newPost);
     await addDoc(postsCollection, {
-      description: newPost,
+      ...newPost,
       time: serverTimestamp(),
       userId: currentUser.uid,
       userEmail: currentUser.email,

@@ -21,8 +21,8 @@ import IntrestsTags from "./IntrestsTags";
 
 
 const NewPost = () => {
-  const { createNewPost, userIntrestsList, setUserIntrestsList } = usePosts();
-  const [newPost, setNewPost] = useState("");
+  const { createNewPost, userIntrestsList, setUserIntrestsList, newPost, setNewPost } = usePosts();
+  
   
 
  
@@ -33,7 +33,9 @@ const NewPost = () => {
 
   async function handleSubmitPost() {
     try {
-      createNewPost(newPost);
+      // setNewPost({...newPost, userIntrestsList})
+      console.log(newPost);
+      createNewPost();
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +55,7 @@ const NewPost = () => {
         <Container sx={{ display: "flex", flexDirection: "row" }}>
           <TextField
             color="warning"
-            onChange={(e) => setNewPost(e.target.value)}
+            onChange={(e) => setNewPost({...newPost,description: e.target.value})}
             id="outlined-basic"
             label="New Post"
             variant="outlined"
@@ -78,7 +80,7 @@ const NewPost = () => {
       /> */}
 
       <IntrestsTags />
-      {console.log("inside new post",userIntrestsList)}
+      {/* {console.log("inside new post",userIntrestsList)} */}
       <Button
         color="warning"
         sx={{ mb: 1 }}
