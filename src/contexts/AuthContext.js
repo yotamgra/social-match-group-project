@@ -28,11 +28,11 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [newPost, setNewPost] = useState("");
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState("");
+ 
+  
+  
 
-  const postsCollection = collection(db, "posts");
+  
 
   async function signup( email, password) {
     const userCredential = await createUserWithEmailAndPassword(

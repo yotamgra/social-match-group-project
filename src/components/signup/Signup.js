@@ -86,7 +86,6 @@ const Signup = () => {
     } catch (err) {
       setLoading(false);
       setError(processFirebaseErrors(err.message));
-      console.log(err);
     }
   }
   useEffect(() => {

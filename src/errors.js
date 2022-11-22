@@ -10,6 +10,8 @@ export const processFirebaseErrors = (msg) => {
       return "Password should be at least 6 characters";
     case "Firebase: Error (auth/wrong-password).":
       return "Wrong password, please try again";
+    case "Firebase: Error (auth/user-not-found).":
+      return "user not found, please signup";
     default:
       return msg;
   }
