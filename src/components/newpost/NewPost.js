@@ -12,7 +12,11 @@ import { Container } from "@mui/system";
 import { useState } from "react";
 
 
+<<<<<<< HEAD
 
+=======
+import { db } from "../../firebase";
+>>>>>>> master
 import { usePosts } from "../../contexts/PostsContext";
 import IntrestsTags from "./IntrestsTags";
 
