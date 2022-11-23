@@ -34,25 +34,22 @@ export function AuthProvider({ children }) {
 
   
 
-  async function signup( email, password) {
+  async function signup( email, password, name, gender,phone) {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     setCurrentUser(userCredential.user);
-  }
-  async function createUserInfo(name, gender,phone) {
     const collectionRef = collection(db, "users");
-
-    console.log("gender", gender);
     await addDoc(collectionRef, {
       name,
-      userId: currentUser.uid,
+      userId: userCredential.user.uid,
       gender,
       phone,
     });
   }
+ 
 
   async function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -75,7 +72,7 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
-    createUserInfo
+  
     // createNewPost,
     // newPost,
     // setNewPost,

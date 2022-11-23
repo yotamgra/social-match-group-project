@@ -20,13 +20,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { processFirebaseErrors } from "../../errors";
 
 const Signup = () => {
-  let nameRef = useRef();
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("female");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  let genderRef = useRef();
-  let emailRef = useRef();
-  let phoneRef = useRef();
-  let passwordRef = useRef();
-  let passwordConfirmRef = useRef();
   const { signup, currentUser, createUserInfo } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -48,39 +48,17 @@ const Signup = () => {
     marginTop: 10,
   };
 
-  function handleNameChange(e) {
-    nameRef = e.target.value;
-  }
-
-  function handleGenderChange(e) {
-    genderRef = e.target.value;
-  }
-  function handleEmailChange(e) {
-    emailRef = e.target.value;
-  }
-
-  function handelPhoneChange(e) {
-    phoneRef = e.target.value;
-  }
-
-  function handlePasswordChange(e) {
-    passwordRef = e.target.value;
-  }
-
-  function handlePasswordConfirmChange(e) {
-    passwordConfirmRef = e.target.value;
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     //check password and password confirm
-    if (passwordRef !== passwordConfirmRef) {
+    if (password !== passwordConfirm) {
       return setError("Passwords do not match");
     }
     try {
       setLoading(true);
-      await signup(emailRef, passwordRef);
-      await createUserInfo(nameRef, genderRef, phoneRef);
+      await signup(email, password, name, gender, phone );
+     
+    
       setLoading(false);
       navigate("/");
     } catch (err) {
@@ -88,10 +66,7 @@ const Signup = () => {
       setError(processFirebaseErrors(err.message));
     }
   }
-  useEffect(() => {
-    genderRef = "female";
-    console.log("gender", genderRef);
-  }, []);
+  useEffect(() => {}, []);
 
   if (loading) return <div>loading...</div>;
 
@@ -116,7 +91,7 @@ const Signup = () => {
               variant="standard"
               fullWidth
               required
-              onChange={handleNameChange}
+              onChange={(e)=>setName(e.target.value)}
             >
               {" "}
             </TextField>
@@ -128,7 +103,7 @@ const Signup = () => {
                 defaultValue="female"
                 name="radio-buttons-group"
                 style={{ display: "initial" }}
-                onChange={handleGenderChange}
+                onChange={(e) => setGender(e.target.value)}
               >
                 <FormControlLabel
                   value="female"
@@ -155,7 +130,7 @@ const Signup = () => {
               required
               type="email"
               style={{}}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
             >
               {" "}
             </TextField>
@@ -164,7 +139,7 @@ const Signup = () => {
               placeholder="Enter your phone number"
               variant="standard"
               fullWidth
-              onChange={handelPhoneChange}
+              onChange={(e)=>setPhone(e.target.value)}
             >
               {" "}
             </TextField>
@@ -175,7 +150,7 @@ const Signup = () => {
               fullWidth
               required
               type="password"
-              onChange={handlePasswordChange}
+              onChange={(e)=>setPassword(e.target.value)}
             >
               {" "}
             </TextField>
@@ -186,7 +161,7 @@ const Signup = () => {
               fullWidth
               required
               type="password"
-              onChange={handlePasswordConfirmChange}
+              onChange={(e)=>setPasswordConfirm(e.target.value)}
             >
               {" "}
             </TextField>
