@@ -1,11 +1,10 @@
-
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import * as React from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { usePosts } from "../../contexts/PostsContext";
 
 export default function IntrestsTags() {
-  const { newPost, setNewPost  } = usePosts();
+  const { newPost, setNewPost } = usePosts();
 
   return (
     <Autocomplete
@@ -13,12 +12,12 @@ export default function IntrestsTags() {
       id="combo-box-demo"
       options={intrestsOptions}
       sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="type your intrest" />}
-      onChange={(event, value)=>setNewPost({...newPost, intrest: value})}
+      renderInput={(params) => (
+        <TextField {...params} label="type your intrest" />
+      )}
+      onChange={(event, value) => setNewPost({ ...newPost, intrest: value })}
     />
   );
-  
-
 }
 
 const intrestsOptions =

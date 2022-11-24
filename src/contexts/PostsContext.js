@@ -69,7 +69,6 @@ export function PostsProvider({ children }) {
     setNewPost,
     getAllPosts,
     posts,
-   
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>

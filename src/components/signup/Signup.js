@@ -56,9 +56,8 @@ const Signup = () => {
     }
     try {
       setLoading(true);
-      await signup(email, password, name, gender, phone );
-     
-    
+      await signup(email, password, name, gender, phone);
+
       setLoading(false);
       navigate("/");
     } catch (err) {
@@ -91,7 +90,7 @@ const Signup = () => {
               variant="standard"
               fullWidth
               required
-              onChange={(e)=>setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             >
               {" "}
             </TextField>
@@ -139,7 +138,7 @@ const Signup = () => {
               placeholder="Enter your phone number"
               variant="standard"
               fullWidth
-              onChange={(e)=>setPhone(e.target.value)}
+              onChange={(e) => setPhone(e.target.value)}
             >
               {" "}
             </TextField>
@@ -150,7 +149,7 @@ const Signup = () => {
               fullWidth
               required
               type="password"
-              onChange={(e)=>setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             >
               {" "}
             </TextField>
@@ -161,7 +160,7 @@ const Signup = () => {
               fullWidth
               required
               type="password"
-              onChange={(e)=>setPasswordConfirm(e.target.value)}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
             >
               {" "}
             </TextField>
