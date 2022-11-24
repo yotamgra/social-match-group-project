@@ -69,7 +69,7 @@ const Signup = () => {
     passwordConfirmRef = e.target.value;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     //check password and password confirm
     if (passwordRef !== passwordConfirmRef) {

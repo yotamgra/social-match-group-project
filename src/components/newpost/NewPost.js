@@ -1,12 +1,21 @@
-import { AddAPhoto, KeyboardArrowRight } from "@mui/icons-material";
+import { KeyboardArrowRight } from "@mui/icons-material";
+import GroupsIcon from "@mui/icons-material/Groups";
 import {
-  Autocomplete,
+  Box,
   Button,
   Card,
   CardContent,
+  FormControlLabel,
+  Grid,
   Input,
-  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  Slider,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
@@ -17,19 +26,62 @@ import { ref, uploadBytes } from "firebase/storage";
 
 import { db } from "../../firebase";
 import { usePosts } from "../../contexts/PostsContext";
-import IntrestsTags from "./IntrestsTags";
-
+import Interest from "./Interest";
 
 const NewPost = () => {
   const { createNewPost, newPost, setNewPost } = usePosts();
-  
-  
 
- 
+  const [cities, setCities] = useState([
+    { name: "Amsterdam", id: "amsterdam" },
+    { name: "London", id: "london" },
+    { name: "Stockholm", id: "stockholm" },
+    { name: "Tel Aviv", id: "telaviv" },
+  ]);
+  const [chosenCity, setChosenCity] = useState("");
 
-  const [photo, setPhoto] = useState(null);
+  const [email, setEmail] = useState("");
+  const [date, setDate] = useState("");
+  const [level, setLevel] = useState("");
+  const [spots, setSpots] = useState(0);
 
-  // const photoRef = ref(storage, "images");
+  const handleDescription = (event) => {
+    setNewPost({ ...newPost, description: event.target.value });
+  };
+
+  const handleCity = (event) => {
+    setChosenCity(event.target.value);
+    setNewPost({ ...newPost, city: event.target.value });
+  };
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+    setNewPost({ ...newPost, email: event.target.value });
+  };
+  const handleDate = (event) => {
+    setDate(event.target.value);
+    setNewPost({ ...newPost, date: event.target.value });
+  };
+
+  const handleLevel = (event) => {
+    setLevel(event.target.value);
+    setNewPost({ ...newPost, level: event.target.value });
+  };
+
+  const handleSliderChange = (event, newValue) => {
+    setSpots(newValue);
+  };
+
+  const handleInputChange = (event) => {
+    setSpots(event.target.value === "" ? "" : Number(event.target.value));
+    setNewPost({ ...newPost, spots: ~~event.target.value });
+  };
+
+  const handleBlur = () => {
+    if (spots < 0) {
+      setSpots(0);
+    } else if (spots > 100) {
+      setSpots(100);
+    }
+  };
 
   async function handleSubmitPost() {
     try {
@@ -41,57 +93,170 @@ const NewPost = () => {
     }
   }
 
-  // const uploadPhoto = () => {
-  //   if (photo === null) return;
-
-  //   uploadBytes(photoRef, photo).then(() => {
-  //     alert("Photo uploaded");
-  //   });
-  // };
-
   return (
-    <Card sx={{ mt: 3, mb: 5 }}>
-      <CardContent>
-        <Container sx={{ display: "flex", flexDirection: "row" }}>
+    <Container maxWidth="sm">
+      <Card
+        sx={{
+          mt: 3,
+          mb: 5,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <CardContent>
           <TextField
             color="warning"
-            onChange={(e) => setNewPost({...newPost,description: e.target.value})}
+            onChange={handleDescription}
             id="outlined-basic"
             label="New Post"
             variant="outlined"
             fullWidth
+            required
             rows={5}
             multiline
           />
-        </Container>
-      </CardContent>
+        </CardContent>
 
-      {/* <Input
-        type="file"
-        label="Upload"
-        onChange={(event) => {
-          setPhoto(event.target.files[0]);
-        }}
-        startAdornment={
-          <InputAdornment position="start">
-            <AddAPhoto />
-          </InputAdornment>
-        }
-      /> */}
+        <Interest />
+        <InputLabel
+          id="select-city"
+          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+        >
+          City
+        </InputLabel>
+        <Select
+          sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+          size="small"
+          color="warning"
+          id="select-city"
+          required
+          value={chosenCity}
+          onChange={handleCity}
+        >
+          {cities &&
+            cities.map((city) => {
+              return (
+                <MenuItem value={city.id} key={city.id}>
+                  {city.name}
+                </MenuItem>
+              );
+            })}
+        </Select>
+        <InputLabel
+          id="email"
+          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+        >
+          Email
+        </InputLabel>
 
-      <IntrestsTags />
-      {/* {console.log("inside new post",userIntrestsList)} */}
-      <Button
-        color="warning"
-        sx={{ mb: 1 }}
-        variant="contained"
-        disableElevation
-        endIcon={<KeyboardArrowRight />}
-        onClick={handleSubmitPost}
-      >
-        SUBMIT
-      </Button>
-    </Card>
+        <TextField
+          sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+          id="email"
+          type="email"
+          size="small"
+          required
+          color="warning"
+          onChange={handleEmail}
+        />
+        <InputLabel
+          id="date"
+          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+        >
+          Date
+        </InputLabel>
+        <TextField
+          sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+          id="date"
+          type="datetime-local"
+          size="small"
+          required
+          color="warning"
+          onChange={handleDate}
+        />
+        <InputLabel
+          id="date"
+          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+        >
+          Level
+        </InputLabel>
+        <RadioGroup
+          onChange={handleLevel}
+          aria-labelledby="select-level"
+          defaultValue="any"
+          sx={{
+            width: 300,
+            mb: 0,
+            ml: "auto",
+            mr: "auto",
+            justifyContent: "space-center",
+          }}
+        >
+          <FormControlLabel value="any" control={<Radio />} label="Any" />
+          <FormControlLabel
+            value="beginner"
+            control={<Radio />}
+            label="Beginner"
+          />
+          <FormControlLabel
+            value="intermediate"
+            control={<Radio />}
+            label="Intermediate"
+          />
+          <FormControlLabel
+            value="advanced"
+            control={<Radio />}
+            label="Advanced"
+          />
+        </RadioGroup>
+        <InputLabel
+          id="date"
+          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+        >
+          Spots
+        </InputLabel>
+        <Box sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item>
+              <GroupsIcon />
+            </Grid>
+            <Grid item xs>
+              <Slider
+                valueLabelDisplay="on"
+                color="warning"
+                value={typeof spots === "number" ? spots : 0}
+                onChange={handleSliderChange}
+              />
+            </Grid>
+            <Grid item>
+              <Input
+                value={spots}
+                size="small"
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                inputProps={{
+                  step: 1,
+                  min: 0,
+                  max: 100,
+                  type: "number",
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+        <Button
+          color="warning"
+          sx={{ width: 300, mb: 2, ml: "auto", mr: "auto" }}
+          variant="contained"
+          disableElevation
+          endIcon={<KeyboardArrowRight />}
+          // onMouseOver={handleSubmitPost}
+          onClick={handleSubmitPost}
+        >
+          SUBMIT
+        </Button>
+      </Card>
+    </Container>
   );
 };
 
