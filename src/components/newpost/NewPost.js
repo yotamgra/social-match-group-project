@@ -20,7 +20,6 @@ import {
 import { Container } from "@mui/system";
 import { useState } from "react";
 
-
 import { usePosts } from "../../contexts/PostsContext";
 import Interest from "./Interest";
 
@@ -48,10 +47,7 @@ const NewPost = () => {
     setChosenCity(event.target.value);
     setNewPost({ ...newPost, city: event.target.value });
   };
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-    setNewPost({ ...newPost, email: event.target.value });
-  };
+
   const handleDate = (event) => {
     setDate(event.target.value);
     setNewPost({ ...newPost, date: event.target.value });
@@ -139,22 +135,7 @@ const NewPost = () => {
               );
             })}
         </Select>
-        <InputLabel
-          id="email"
-          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-        >
-          Email
-        </InputLabel>
 
-        <TextField
-          sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
-          id="email"
-          type="email"
-          size="small"
-          required
-          color="warning"
-          onChange={handleEmail}
-        />
         <InputLabel
           id="date"
           sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
