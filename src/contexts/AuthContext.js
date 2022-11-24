@@ -47,6 +47,7 @@ export function AuthProvider({ children }) {
       userId: userCredential.user.uid,
       gender,
       phone,
+      email
     });
   }
  
