@@ -7,18 +7,22 @@ import {
   Checkbox,
   Button,
   Typography,
+  Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import Signup from "../signup/Signup";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { processFirebaseErrors } from "../../errors";
 
 const Login = ({ handleTabChange }) => {
   let emailRef = useRef();
   let passwordRef = useRef();
   const navigate = useNavigate();
   const { login, currentUser } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const paperStyle = {
     padding: 20,
@@ -46,11 +50,13 @@ const Login = ({ handleTabChange }) => {
     e.preventDefault();
 
     try {
-      console.log("login", emailRef, passwordRef);
-      await login( emailRef, passwordRef);
+      setLoading(true);
+      await login(emailRef, passwordRef);
+      setLoading(false);
       navigate("/");
     } catch (err) {
-      console.log(err);
+      setLoading(false);
+      setError(processFirebaseErrors(err.message));
     }
   }
 
@@ -62,6 +68,7 @@ const Login = ({ handleTabChange }) => {
             <LockOutlinedIcon />
           </Avatar>
           <h2>Sign In</h2>
+          {error && <Alert severity="error">{error}</Alert>}
         </Grid>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -82,20 +89,20 @@ const Login = ({ handleTabChange }) => {
             required
             onChange={handlePasswordChange}
           />
-        <FormControlLabel
-          control={<Checkbox defaultChecked />}
-          label="Remember me"
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label="Remember me"
           />
-        <Button
-          type="submit"
-          color="primary"
-          fullWidth
-          variant="contained"
-          style={buttonStyle}
+          <Button
+            type="submit"
+            color="primary"
+            fullWidth
+            variant="contained"
+            style={buttonStyle}
           >
-          Sign in
-        </Button>
-          </form>
+            Sign in
+          </Button>
+        </form>
         <Typography>
           <Link className="login-links" to="#">
             {" "}

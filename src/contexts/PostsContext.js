@@ -27,6 +27,7 @@ export function PostsProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [newPost, setNewPost] = useState({ description: "" });
   const [posts, setPosts] = useState([]);
+  
 
   const postsCollection = collection(db, "posts");
 

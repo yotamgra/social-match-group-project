@@ -19,12 +19,8 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 
-import { addDoc, getDocs, collection } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
 
-import { db } from "../../firebase";
 import { usePosts } from "../../contexts/PostsContext";
 import Interest from "./Interest";
 

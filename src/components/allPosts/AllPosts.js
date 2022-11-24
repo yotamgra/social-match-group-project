@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+
+import { usePosts } from "../../contexts/PostsContext";
 
 const AllPosts = () => {
-  const { posts, getAllPosts } = useAuth();
+  const { posts, getAllPosts } = usePosts();
   useEffect(() => {
     const f = async () => {
       await getAllPosts();
