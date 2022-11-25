@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { usePosts } from "../../contexts/PostsContext";
 import { styled } from "@mui/material/styles";
 
@@ -34,23 +34,45 @@ const ExpandMore = styled((props) => {
 }));
 
 const AllPosts = () => {
-  const { posts, getAllPosts } = usePosts();
-  const [expanded, setExpanded] = React.useState(false);
+  const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts } = usePosts();
 
+  const [expanded, setExpanded] = useState(false);
+const [isFiltered,setIsFiltered] = useState(false)
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   useEffect(() => {
     const f = async () => {
-      await getAllPosts();
-      // console.log(posts);
+      try{
+        await getAllPosts();
+        if(filter.location !== ""){
+          await getFilteredPosts()
+          setIsFiltered(true)
+
+        }
+    } catch(err){
+      console.log(err);
+    }
+      console.log("here");
+      console.log("filter",filter);
     };
     f();
-  }, []);
+  }, [filter]);
 
-  return (
-    <>
+
+console.log("isFiltered",isFiltered);
+console.log("filteredPosts",filteredPosts);
+  return (filteredPosts.length > 0 && isFiltered)?( <>
+    <h3>Filtered Posts</h3>
+    { filteredPosts.map((post, index) => (
+      <div className="post-container" key={index}>
+        <p>{post.userId}</p>
+        <p>{post.description}</p>
+        <p>{(post.time.seconds)}</p>
+      </div>
+    ))}
+  </>):(<>
       <h2>All Posts</h2>
       {posts.map((post, index) => (
         <div className="" key={index}>
@@ -99,8 +121,8 @@ const AllPosts = () => {
           </Container>
         </div>
       ))}
-    </>
-  );
+    </>);
+  
 };
 
 export default AllPosts;
