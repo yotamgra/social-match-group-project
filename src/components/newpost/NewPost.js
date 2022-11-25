@@ -24,14 +24,9 @@ import { usePosts } from "../../contexts/PostsContext";
 import Interest from "./Interest";
 
 const NewPost = () => {
-  const { createNewPost, newPost, setNewPost } = usePosts();
+  const { createNewPost, newPost, setNewPost, cities, setFilter } = usePosts();
 
-  const [cities, setCities] = useState([
-    { name: "Amsterdam", id: "amsterdam" },
-    { name: "London", id: "london" },
-    { name: "Stockholm", id: "stockholm" },
-    { name: "Tel Aviv", id: "telaviv" },
-  ]);
+  
   const [chosenCity, setChosenCity] = useState("");
 
   const [email, setEmail] = useState("");
@@ -79,7 +74,9 @@ const NewPost = () => {
     try {
       // setNewPost({...newPost, userIntrestsList})
       console.log(newPost);
-      createNewPost();
+      await createNewPost();
+      setFilter({location:""})
+
     } catch (err) {
       console.log(err);
     }

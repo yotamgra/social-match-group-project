@@ -5,6 +5,7 @@ import { AuthProvider } from "../src/contexts/AuthContext";
 import { PostsProvider } from "../src/contexts/PostsContext";
 import Dashboard from "../src/components/dashboard/Dashboard";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import NewPost from "./components/newpost/NewPost";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
               <Route path="/login-signup" element={<LoginSignUp />} />
               <Route element={<PrivateRoute />}>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/new-post" element={<NewPost/>} />
               </Route>
             </Routes>
           </PostsProvider>

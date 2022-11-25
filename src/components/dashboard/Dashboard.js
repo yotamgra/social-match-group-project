@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import NewPost from "../newpost/NewPost";
 import AllPosts from "../allPosts/AllPosts";
+import Filter from "../filter/Filter";
+
 
 const Dashboard = () => {
   const { logout } = useAuth();
@@ -22,7 +24,8 @@ const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <NewPost />
+      <button onClick={()=>navigate("/new-post")}>Create New Post</button>
+      <Filter />
       <AllPosts />
     </>
   );
