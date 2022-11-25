@@ -37,7 +37,7 @@ const NewPost = () => {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [level, setLevel] = useState("");
-  const [spots, setSpots] = useState(0);
+  const [spots, setSpots] = useState(15);
 
   const handleDescription = (event) => {
     setNewPost({ ...newPost, description: event.target.value });
@@ -77,8 +77,7 @@ const NewPost = () => {
 
   async function handleSubmitPost() {
     try {
-      // setNewPost({...newPost, userIntrestsList})
-      console.log(newPost);
+      //console.log(newPost);
       createNewPost();
     } catch (err) {
       console.log(err);
@@ -98,10 +97,10 @@ const NewPost = () => {
       >
         <CardContent>
           <TextField
-            color="warning"
             onChange={handleDescription}
+            placeholder="New Post"
+            color="warning"
             id="outlined-basic"
-            label="New Post"
             variant="outlined"
             fullWidth
             required
@@ -159,7 +158,6 @@ const NewPost = () => {
         </InputLabel>
         <RadioGroup
           onChange={handleLevel}
-          aria-labelledby="select-level"
           defaultValue="any"
           sx={{
             width: 300,
