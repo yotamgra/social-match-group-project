@@ -36,11 +36,8 @@ const ExpandMore = styled((props) => {
 const AllPosts = () => {
   const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts } = usePosts();
 
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState([]);
 const [isFiltered,setIsFiltered] = useState(false)
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   useEffect(() => {
     const f = async () => {
@@ -74,7 +71,9 @@ console.log("filteredPosts",filteredPosts);
     ))}
   </>):(<>
       <h2>All Posts</h2>
-      {posts.map((post, index) => (
+      {posts.map((post, index) => {
+        expanded.push(false)
+        return(
         <div className="" key={index}>
           <Container maxWidth="sm" sx={{ mb: 2 }}>
             <Card>
@@ -103,15 +102,20 @@ console.log("filteredPosts",filteredPosts);
                   <EmailIcon />
                 </IconButton>
                 <ExpandMore
-                  expand={expanded}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
+                  expand={expanded[index]}
+                  onClick={() =>{
+                    const array =  [...expanded]
+                    array[index]= !array[index]
+                    setExpanded(array)
+                  }
+                  }
+                  aria-expanded={expanded[index]}
                   aria-label="show more"
                 >
                   <ExpandMoreIcon />
                 </ExpandMore>
               </CardActions>
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
                 <CardContent>
                   <Typography paragraph>Title:</Typography>
                   <Typography paragraph>Text itself</Typography>
@@ -120,7 +124,7 @@ console.log("filteredPosts",filteredPosts);
             </Card>
           </Container>
         </div>
-      ))}
+      )})}
     </>);
   
 };

@@ -78,7 +78,10 @@ export function PostsProvider({ children }) {
 
   async function getFilteredPosts() {
 
-    const q = query(postsCollection, where("city", "==", filter.location),where("userId", "==", currentUser.uid));
+    // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
+
+
+    const q = query(postsCollection, where("city", "==", filter.location),where("intrest", "==", filter.intrest));
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
