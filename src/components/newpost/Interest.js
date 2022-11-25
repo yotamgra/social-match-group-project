@@ -2,21 +2,27 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { usePosts } from "../../contexts/PostsContext";
+import { InputLabel } from "@mui/material";
 
 export default function IntrestsTags() {
   const { newPost, setNewPost } = usePosts();
 
   return (
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={intrestsOptions}
-      sx={{ width: 300 }}
-      renderInput={(params) => (
-        <TextField {...params} label="type your intrest" />
-      )}
-      onChange={(event, value) => setNewPost({ ...newPost, intrest: value })}
-    />
+    <>
+      <InputLabel id="date" sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
+        Type your interest
+      </InputLabel>
+      <Autocomplete
+        disablePortal
+        id="autoselect-interest"
+        size="small"
+        required
+        options={intrestsOptions}
+        sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+        renderInput={(params) => <TextField {...params} color="warning" />}
+        onChange={(event, value) => setNewPost({ ...newPost, interest: value })}
+      />
+    </>
   );
 }
 
