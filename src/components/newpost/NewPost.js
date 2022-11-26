@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
 import Navbar from "../navbar/Navbar";
@@ -33,6 +33,10 @@ const NewPost = () => {
   const [date, setDate] = useState("");
   const [level, setLevel] = useState("");
   const [spots, setSpots] = useState(15);
+
+  useEffect(() => {
+    setNewPost({ ...newPost, spots: 15 });
+  }, []);
 
   const handleTitle = (event) => {
     setNewPost({ ...newPost, title: event.target.value });
@@ -59,6 +63,7 @@ const NewPost = () => {
 
   const handleSliderChange = (event, newValue) => {
     setSpots(newValue);
+    setNewPost({ ...newPost, spots: parseInt(newValue) });
   };
 
   const handleInputChange = (event) => {

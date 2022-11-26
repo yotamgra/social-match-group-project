@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
-
-import Post from "../Post/Post";
+import PresentPosts from "../Post/PresentPosts";
 
 const AllPosts = () => {
   const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts } =
@@ -43,7 +42,7 @@ const AllPosts = () => {
   ) : (
     <>
       <h2>All Posts</h2>
-      <Post posts={posts} />
+      <PresentPosts posts={posts} />
     </>
   );
 };
