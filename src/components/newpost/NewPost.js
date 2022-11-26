@@ -21,18 +21,22 @@ import { Container } from "@mui/system";
 import { useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
+import Navbar from "../navbar/Navbar";
 import Interest from "./Interest";
 
 const NewPost = () => {
   const { createNewPost, newPost, setNewPost, cities, setFilter } = usePosts();
 
-  
   const [chosenCity, setChosenCity] = useState("");
 
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [level, setLevel] = useState("");
   const [spots, setSpots] = useState(15);
+
+  const handleTitle = (event) => {
+    setNewPost({ ...newPost, title: event.target.value });
+  };
 
   const handleDescription = (event) => {
     setNewPost({ ...newPost, description: event.target.value });
@@ -59,7 +63,8 @@ const NewPost = () => {
 
   const handleInputChange = (event) => {
     setSpots(event.target.value === "" ? "" : Number(event.target.value));
-    setNewPost({ ...newPost, spots: ~~event.target.value });
+    setNewPost({ ...newPost, spots: parseInt(event.target.value) });
+    console.log(newPost);
   };
 
   const handleBlur = () => {
@@ -75,161 +80,174 @@ const NewPost = () => {
       // setNewPost({...newPost, userIntrestsList})
       console.log(newPost);
       await createNewPost();
-      setFilter({location:""})
-
+      setFilter({ location: "" });
     } catch (err) {
       console.log(err);
     }
   }
 
   return (
-    <Container maxWidth="sm">
-      <Card
-        sx={{
-          mt: 3,
-          mb: 5,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <CardContent>
-          <TextField
-            onChange={handleDescription}
-            placeholder="New Post"
-            color="warning"
-            id="outlined-basic"
-            variant="outlined"
-            fullWidth
-            required
-            rows={5}
-            multiline
-          />
-        </CardContent>
-
-        <Interest />
-        <InputLabel
-          id="select-city"
-          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-        >
-          City
-        </InputLabel>
-        <Select
-          sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
-          size="small"
-          color="warning"
-          id="select-city"
-          required
-          value={chosenCity}
-          onChange={handleCity}
-        >
-          {cities &&
-            cities.map((city) => {
-              return (
-                <MenuItem value={city.id} key={city.id}>
-                  {city.name}
-                </MenuItem>
-              );
-            })}
-        </Select>
-
-        <InputLabel
-          id="date"
-          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-        >
-          Date
-        </InputLabel>
-        <TextField
-          sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
-          id="date"
-          type="datetime-local"
-          size="small"
-          required
-          color="warning"
-          onChange={handleDate}
-        />
-        <InputLabel
-          id="date"
-          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-        >
-          Level
-        </InputLabel>
-        <RadioGroup
-          onChange={handleLevel}
-          defaultValue="any"
+    <>
+      <Navbar />
+      <Container maxWidth="sm">
+        <Card
           sx={{
-            width: 300,
-            mb: 0,
-            ml: "auto",
-            mr: "auto",
-            justifyContent: "space-center",
+            mt: 3,
+            mb: 5,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          <FormControlLabel value="any" control={<Radio />} label="Any" />
-          <FormControlLabel
-            value="beginner"
-            control={<Radio />}
-            label="Beginner"
+          <CardContent>
+            <TextField
+              onChange={handleTitle}
+              placeholder="Title"
+              color="warning"
+              id="outlined-basic"
+              variant="outlined"
+              fullWidth
+              required
+            />
+          </CardContent>
+          <CardContent>
+            <TextField
+              onChange={handleDescription}
+              placeholder="New Post"
+              color="warning"
+              id="outlined-basic"
+              variant="outlined"
+              fullWidth
+              required
+              rows={5}
+              multiline
+            />
+          </CardContent>
+
+          <Interest />
+          <InputLabel
+            id="select-city"
+            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+          >
+            City
+          </InputLabel>
+          <Select
+            sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+            size="small"
+            color="warning"
+            id="select-city"
+            required
+            value={chosenCity}
+            onChange={handleCity}
+          >
+            {cities &&
+              cities.map((city) => {
+                return (
+                  <MenuItem value={city.id} key={city.id}>
+                    {city.name}
+                  </MenuItem>
+                );
+              })}
+          </Select>
+
+          <InputLabel
+            id="date"
+            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+          >
+            Date
+          </InputLabel>
+          <TextField
+            sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+            id="date"
+            type="datetime-local"
+            size="small"
+            required
+            color="warning"
+            onChange={handleDate}
           />
-          <FormControlLabel
-            value="intermediate"
-            control={<Radio />}
-            label="Intermediate"
-          />
-          <FormControlLabel
-            value="advanced"
-            control={<Radio />}
-            label="Advanced"
-          />
-        </RadioGroup>
-        <InputLabel
-          id="date"
-          sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-        >
-          Spots
-        </InputLabel>
-        <Box sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <GroupsIcon />
+          <InputLabel
+            id="date"
+            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+          >
+            Level
+          </InputLabel>
+          <RadioGroup
+            onChange={handleLevel}
+            defaultValue="any"
+            sx={{
+              width: 300,
+              mb: 0,
+              ml: "auto",
+              mr: "auto",
+              justifyContent: "space-center",
+            }}
+          >
+            <FormControlLabel value="any" control={<Radio />} label="Any" />
+            <FormControlLabel
+              value="beginner"
+              control={<Radio />}
+              label="Beginner"
+            />
+            <FormControlLabel
+              value="intermediate"
+              control={<Radio />}
+              label="Intermediate"
+            />
+            <FormControlLabel
+              value="advanced"
+              control={<Radio />}
+              label="Advanced"
+            />
+          </RadioGroup>
+          <InputLabel
+            id="date"
+            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+          >
+            Spots
+          </InputLabel>
+          <Box sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>
+                <GroupsIcon />
+              </Grid>
+              <Grid item xs>
+                <Slider
+                  valueLabelDisplay="on"
+                  color="warning"
+                  value={typeof spots === "number" ? spots : 0}
+                  onChange={handleSliderChange}
+                />
+              </Grid>
+              <Grid item>
+                <Input
+                  value={spots}
+                  size="small"
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  inputProps={{
+                    step: 1,
+                    min: 0,
+                    max: 100,
+                    type: "number",
+                  }}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <Slider
-                valueLabelDisplay="on"
-                color="warning"
-                value={typeof spots === "number" ? spots : 0}
-                onChange={handleSliderChange}
-              />
-            </Grid>
-            <Grid item>
-              <Input
-                value={spots}
-                size="small"
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                inputProps={{
-                  step: 1,
-                  min: 0,
-                  max: 100,
-                  type: "number",
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-        <Button
-          color="warning"
-          sx={{ width: 300, mb: 2, ml: "auto", mr: "auto" }}
-          variant="contained"
-          disableElevation
-          endIcon={<KeyboardArrowRight />}
-          // onMouseOver={handleSubmitPost}
-          onClick={handleSubmitPost}
-        >
-          SUBMIT
-        </Button>
-      </Card>
-    </Container>
+          </Box>
+          <Button
+            color="warning"
+            sx={{ width: 300, mb: 2, ml: "auto", mr: "auto" }}
+            variant="contained"
+            disableElevation
+            endIcon={<KeyboardArrowRight />}
+            // onMouseOver={handleSubmitPost}
+            onClick={handleSubmitPost}
+          >
+            SUBMIT
+          </Button>
+        </Card>
+      </Container>
+    </>
   );
 };
 

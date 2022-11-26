@@ -1,4 +1,5 @@
 import { Logout } from "@mui/icons-material";
+
 import {
   AppBar,
   Avatar,
@@ -38,9 +39,18 @@ const Navbar = () => {
         py: 1,
       }}
     >
-      <Typography variant="h4">Social Match</Typography>
+      <Typography
+        variant="h4"
+        sx={{ cursor: "pointer" }}
+        onClick={() => navigate("/")}
+      >
+        Social Match
+      </Typography>
 
-      <Avatar onClick={(e) => setOpen(true)}></Avatar>
+      <Avatar
+        onClick={(e) => setOpen(true)}
+        sx={{ cursor: "pointer" }}
+      ></Avatar>
       <Menu
         id="account-menu"
         open={open}
