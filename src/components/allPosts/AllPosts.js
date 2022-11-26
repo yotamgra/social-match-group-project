@@ -34,7 +34,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const AllPosts = () => {
-  const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts } = usePosts();
+  const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts, } = usePosts();
 
   const [expanded, setExpanded] = useState([]);
 const [isFiltered,setIsFiltered] = useState(false)
@@ -43,7 +43,9 @@ const [isFiltered,setIsFiltered] = useState(false)
     const f = async () => {
       try{
         await getAllPosts();
-        if(filter.location !== ""){
+        console.log(filter.location || filter.intrest);
+        if(filter.location  || filter.intrest){
+          console.log("call getfilteredposts");
           await getFilteredPosts()
           setIsFiltered(true)
 
@@ -51,15 +53,15 @@ const [isFiltered,setIsFiltered] = useState(false)
     } catch(err){
       console.log(err);
     }
-      console.log("here");
-      console.log("filter",filter);
+      // console.log("here");
+      // console.log("filter",filter);
     };
     f();
   }, [filter]);
 
 
-console.log("isFiltered",isFiltered);
-console.log("filteredPosts",filteredPosts);
+// console.log("isFiltered",isFiltered);
+// console.log("filteredPosts",filteredPosts);
   return (filteredPosts.length > 0 && isFiltered)?( <>
     <h3>Filtered Posts</h3>
     { filteredPosts.map((post, index) => (

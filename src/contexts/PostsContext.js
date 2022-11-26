@@ -34,22 +34,25 @@ export function PostsProvider({ children }) {
     { name: "London", id: "london" },
     { name: "Stockholm", id: "stockholm" },
     { name: "Tel Aviv", id: "telaviv" },
+    { name: "All", id: "all" },
+    
   ]);
 
-  useEffect(()=>setFilter({location:""}),[])
+  useEffect(() => setFilter({ location: "", intrest:"" }), []);
 
-  const [filter, setFilter] = useState({location:""});
-  const [location,setLocation] = useState(filter.location)
+  const [filter, setFilter] = useState({ location: "", intrest: "" });
+  const [location, setLocation] = useState(filter.location);
 
-  useEffect(()=>{
-    setLocation(filter.location)
-  },[filter])
-  
+  useEffect(() => {
+    setLocation(filter.location);
+  }, [filter]);
 
   const postsCollection = collection(db, "posts");
+  const usersCollection = collection(db, "users");
 
   async function createNewPost() {
-    console.log("newPost", newPost);
+    getCurrentUserInfo()
+    // console.log("userInfo", userInfo);
     await addDoc(postsCollection, {
       ...newPost,
       time: serverTimestamp(),
@@ -59,35 +62,51 @@ export function PostsProvider({ children }) {
   }
 
   async function getCurrentUserPosts() {
-    const q = query(postsCollection, "userId", "===", currentUser.uid);
+    const q = query(postsCollection, "userId", "==", currentUser.uid);
+  }
+  async function getCurrentUserInfo() {
+    const q = query(usersCollection, "userId", "==", currentUser.uid);
+    const docSnap = await getDocs(q);
+    console.log("info",docSnap);
+    return docSnap
   }
 
   async function getAllPosts() {
-
-    const q = query(postsCollection, where("userId", "!=", "-1"));
+    const q = query(postsCollection);
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
       postsArray.push(doc.data());
     });
-   
+
     setPosts([...postsArray]);
   }
 
-
-
   async function getFilteredPosts() {
-
     // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
+    const postsCollection = collection(db, "posts");
+    let q;
+    console.log("filter",filter);
+    if (filter.location ) {
+      console.log("location");
+      q = query(postsCollection, where("city", "==", filter.location));
+    }
+    if (filter.intrest ) {
+      console.log("intrest");
+      q = query(postsCollection,  where("intrest", "==", filter.intrest));
+    }
+    if (filter.location  && filter.intrest) {
+      console.log("intrest%location");
+      q = query(postsCollection, where("city", "==", filter.location), where("intrest", "==", filter.intrest));
+    }
 
-
-    const q = query(postsCollection, where("city", "==", filter.location),where("intrest", "==", filter.intrest));
+   ;
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
       postsArray.push(doc.data());
     });
-   console.log("postsArray",postsArray);
+    console.log("postsArray", postsArray);
     setFilteredPosts([...postsArray]);
   }
 
@@ -100,11 +119,12 @@ export function PostsProvider({ children }) {
     getAllPosts,
     posts,
     cities,
-    filter, 
+    filter,
     setFilter,
     filteredPosts,
     setFilter,
-    getFilteredPosts
+    getFilteredPosts,
+    getCurrentUserPosts
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>

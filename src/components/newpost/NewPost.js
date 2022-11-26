@@ -22,10 +22,11 @@ import { useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
 import Interest from "./Interest";
+import { useNavigate } from "react-router-dom";
 
 const NewPost = () => {
   const { createNewPost, newPost, setNewPost, cities, setFilter } = usePosts();
-
+  const navigate = useNavigate();
   
   const [chosenCity, setChosenCity] = useState("");
 
@@ -75,7 +76,8 @@ const NewPost = () => {
       // setNewPost({...newPost, userIntrestsList})
       console.log(newPost);
       await createNewPost();
-      setFilter({location:""})
+      setFilter({location:"", intrest:""})
+      navigate("/")
 
     } catch (err) {
       console.log(err);
