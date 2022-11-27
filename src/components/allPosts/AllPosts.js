@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
-import PresentPosts from "../Post/PresentPosts";
+import PresentPosts from "./PresentPosts";
 
 const AllPosts = () => {
   const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts } =
