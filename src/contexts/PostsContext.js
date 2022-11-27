@@ -47,8 +47,13 @@ export function PostsProvider({ children }) {
   useEffect(() => {}, [filter]);
 
   async function createNewPost() {
-    const userInfo = await getCurrentUserInfo();
-    console.log("userInfo", userInfo);
+    // getCurrentUserPosts();
+    try{
+    const userInfo =  await getCurrentUserInfo();
+    console.log("userInfo", userInfo[0]);
+  }catch(err){
+    console.log(err);
+  }
     await addDoc(postsCollection, {
       ...newPost,
       time: serverTimestamp(),
@@ -58,27 +63,28 @@ export function PostsProvider({ children }) {
   }
 
   async function getCurrentUserPosts() {
-    const q = query(postsCollection, "userId", "==", currentUser.uid);
+    const q = query(postsCollection, where("userId", "==", currentUser.uid));
+    const docSnap = await getDocs(q);
+    const postsArray = [];
+    docSnap.forEach((doc) => {
+      postsArray.push(doc.data());
+    });
+    console.log("user posts", postsArray);
   }
-  async function getCurrentUserInfo() {
 
-    const docRef = doc(db, "users", currentUser.uid);
-const docSnap = await getDoc(docRef);
+  const getCurrentUserInfo = useCallback(async ()=>{
+    console.log("currentUser.uid",currentUser.uid);
+    const q = query(usersCollection, where("userId", "==", currentUser.uid));
+    const docSnap = await getDocs(q);
+    const userArray = [];
+    docSnap.forEach((doc) => {
+      userArray.push(doc.data());
+    });
+    console.log("user ", userArray);
 
-if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
-} else {
-  // doc.data() will be undefined in this case
-  console.log("No such document!");
-}
-
-
-
-    // const q = query(usersCollection, where("userId", "==", currentUser.uid));
-    // const docSnap = await getDoc(q);
-    // console.log("info", docSnap);
-    // return docSnap.data();
-  }
+    return userArray;
+  },[currentUser.uid])
+   
   const getAllPosts = useCallback(async () => {
     const q = query(postsCollection, orderBy("time", "desc"));
     const docSnap = await getDocs(q);
