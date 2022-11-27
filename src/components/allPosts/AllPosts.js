@@ -13,15 +13,17 @@ const AllPosts = () => {
     const f = async () => {
       try {
         await getAllPosts();
-        if (filter.location !== "") {
+        console.log(filter.location || filter.intrest);
+        if (filter.location || filter.intrest) {
+          console.log("call getfilteredposts");
           await getFilteredPosts();
           setIsFiltered(true);
         }
       } catch (err) {
         console.log(err);
       }
-      console.log("here");
-      console.log("filter", filter);
+      // console.log("here");
+      // console.log("filter",filter);
     };
     f();
   }, [filter]);
@@ -31,13 +33,7 @@ const AllPosts = () => {
   return filteredPosts.length > 0 && isFiltered ? (
     <>
       <h3>Filtered Posts</h3>
-      {filteredPosts.map((post, index) => (
-        <div className="post-container" key={index}>
-          <p>{post.userId}</p>
-          <p>{post.description}</p>
-          <p>{post.time.seconds}</p>
-        </div>
-      ))}
+      <PresentPosts posts={filteredPosts} />
     </>
   ) : (
     <>
