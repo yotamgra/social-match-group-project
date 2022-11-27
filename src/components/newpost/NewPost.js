@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 const NewPost = () => {
   const { createNewPost, newPost, setNewPost, cities, setFilter } = usePosts();
   const navigate = useNavigate();
-  
+
   const [chosenCity, setChosenCity] = useState("");
 
   const [email, setEmail] = useState("");
@@ -84,12 +84,11 @@ const NewPost = () => {
 
   async function handleSubmitPost() {
     try {
-      // setNewPost({...newPost, userIntrestsList})
+      // setNewPost({...newPost, userinterestsList})
       console.log(newPost);
       await createNewPost();
-      setFilter({location:"", intrest:""})
-      navigate("/")
-
+      setFilter({ location: "", interest: "" });
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
