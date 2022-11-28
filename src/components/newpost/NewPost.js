@@ -35,16 +35,31 @@ const NewPost = () => {
     setFilter,
     loading,
     setLoading,
+    editor,
+    setEditor,
+    editForm,
+    editUserPost,
+    setChangeInPosts,
+    setEditForm,
   } = usePosts();
   const navigate = useNavigate();
 
-  const [chosenCity, setChosenCity] = useState("");
+  const intialNewPost = {title:"", description:"", spots: 15, city:"", date:"", level:"", interest:""}
 
+  const [chosenCity, setChosenCity] = useState("");
   const [level, setLevel] = useState("");
   const [spots, setSpots] = useState(15);
 
   useEffect(() => {
     setNewPost({ ...newPost, spots: 15 });
+    console.log("editor", editor);
+    if (editor) {
+      setChangeInPosts(true);
+      setNewPost({ ...editForm });
+      setChosenCity(editForm.city);
+      setLevel(editForm.level);
+      setSpots(editForm.spots);
+    }
   }, []);
 
   const handleBlur = () => {
@@ -58,11 +73,17 @@ const NewPost = () => {
   async function handleSubmitPost() {
     try {
       setLoading(true);
-      // setNewPost({...newPost, userinterestsList})
-      console.log(newPost);
-      await createNewPost();
+      if (editor) {
+        // EDIT POST
+        editUserPost({ ...newPost })
+        setEditor(false);
+        setNewPost({ ...intialNewPost });
+
+      } else {
+        await createNewPost();
+        setFilter({ location: "", interest: "" });
+      }
       setLoading(false);
-      setFilter({ location: "", interest: "" });
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -109,6 +130,7 @@ const NewPost = () => {
               id="input-title"
               variant="outlined"
               fullWidth
+              value={newPost.title}
             />
           </CardContent>
           <CardContent>
@@ -125,10 +147,11 @@ const NewPost = () => {
               fullWidth
               rows={5}
               multiline
+              value={newPost.description}
             />
           </CardContent>
 
-          <Interest />
+          <Interest editInterest={editForm.interest} />
           <InputLabel
             id="select-city"
             sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
@@ -175,6 +198,7 @@ const NewPost = () => {
             type="datetime-local"
             size="small"
             color="warning"
+            value={newPost.date}
           />
           <InputLabel
             id="level"

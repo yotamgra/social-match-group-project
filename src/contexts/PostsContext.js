@@ -13,6 +13,7 @@ import {
   getDocs,
   where,
   deleteDoc,
+  setDoc,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { useAuth } from "./AuthContext";
@@ -33,10 +34,9 @@ export function PostsProvider({ children }) {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState({ location: "", interest: "" });
-  const [changeInPosts, setChangeInPosts] = useState(false)
-  const [editor, setEditor] = useState(false)
-  const [editForm, setEditForm] = useState("")
-  
+  const [changeInPosts, setChangeInPosts] = useState(false);
+  const [editor, setEditor] = useState(false);
+  const [editForm, setEditForm] = useState("");
 
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "Amsterdam" },
@@ -116,6 +116,16 @@ export function PostsProvider({ children }) {
     await deleteDoc(docRef);
   };
 
+  // UPDATE/PUT (SET)
+  const editUserPost = async (editedPost) => {
+    console.log("editedPost.id",editedPost);
+    const docRef = doc(db, "posts", editedPost.id);
+    await setDoc(docRef, {
+      ...editedPost,
+      updatedAt: serverTimestamp(),
+    });
+  };
+
   const value = {
     createNewPost,
     newPost,
@@ -129,15 +139,16 @@ export function PostsProvider({ children }) {
     getFilteredPosts,
     getCurrentUserPosts,
     deleteUserPost,
+    editUserPost,
 
-    changeInPosts, 
+    changeInPosts,
     setChangeInPosts,
-    editor, 
+    editor,
     setEditor,
-    editForm, 
+    editForm,
     setEditForm,
-    loading, 
-    setLoading
+    loading,
+    setLoading,
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>
