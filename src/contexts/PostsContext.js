@@ -28,12 +28,15 @@ const usersCollection = collection(db, "users");
 
 export function PostsProvider({ children }) {
   const { currentUser } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [newPost, setNewPost] = useState({ description: "" });
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState({ location: "", interest: "" });
   const [changeInPosts, setChangeInPosts] = useState(false)
+  const [editor, setEditor] = useState(false)
+  const [editForm, setEditForm] = useState("")
+  
 
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "amsterdam" },
@@ -128,7 +131,13 @@ export function PostsProvider({ children }) {
     getCurrentUserPosts,
     deleteUserPost,
     changeInPosts, 
-    setChangeInPosts
+    setChangeInPosts,
+    editor, 
+    setEditor,
+    editForm, 
+    setEditForm,
+    loading, 
+    setLoading
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>

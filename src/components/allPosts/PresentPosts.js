@@ -28,7 +28,7 @@ function PresentPosts({ posts }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState([]);
   const { currentUser } = useAuth();
-  const { deleteUserPost, changeInPosts, setChangeInPosts } = usePosts();
+  const { deleteUserPost, changeInPosts, setChangeInPosts, setEditor } = usePosts();
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -102,7 +102,13 @@ function PresentPosts({ posts }) {
                   >
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton aria-label="edit">
+                  <IconButton aria-label="edit"
+                   onClick={() => {
+                    navigate("/new-post")
+                    setChangeInPosts(true)
+                    setEditor(true)
+                    
+                  }}>
                     <EditIcon />
                   </IconButton>
                 </>
