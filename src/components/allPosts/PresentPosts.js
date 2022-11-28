@@ -16,8 +16,11 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EmailIcon from "@mui/icons-material/Email";
+import EditIcon from "@mui/icons-material/Edit";
 import { Container } from "@mui/system";
+import { Button } from "react-bootstrap";
 
 function PresentPosts({ posts }) {
   const [expanded, setExpanded] = useState([]);
@@ -40,7 +43,7 @@ function PresentPosts({ posts }) {
         <Container maxWidth="sm" sx={{ mb: 2 }}>
           <Card>
             <CardHeader
-              avatar={<Avatar>{post.userEmail[0].toUpperCase()}</Avatar>}
+              avatar={<Avatar>{post.user.email[0].toUpperCase()}</Avatar>}
               action={<Chip label={post.interest} />}
               title={post.title}
               subheader={`${post.time
@@ -80,6 +83,12 @@ function PresentPosts({ posts }) {
               <CardContent>
                 <Typography paragraph>Title:</Typography>
               </CardContent>
+              <IconButton aria-label="delete">
+                <DeleteIcon />
+              </IconButton>
+              <IconButton aria-label="edit">
+                <EditIcon />
+              </IconButton>
             </Collapse>
           </Card>
         </Container>

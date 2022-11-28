@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { db } from "../firebase";
 
 import {
@@ -22,12 +22,16 @@ export function usePosts() {
   return useContext(PostsContext);
 }
 
+const postsCollection = collection(db, "posts");
+const usersCollection = collection(db, "users");
+
 export function PostsProvider({ children }) {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [newPost, setNewPost] = useState({ description: "" });
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [filter, setFilter] = useState({ location: "", interest: "" });
 
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "amsterdam" },
@@ -35,44 +39,51 @@ export function PostsProvider({ children }) {
     { name: "Stockholm", id: "stockholm" },
     { name: "Tel Aviv", id: "telaviv" },
     { name: "All", id: "all" },
-    
   ]);
 
-  useEffect(() => setFilter({ location: "", intrest:"" }), []);
-
-  const [filter, setFilter] = useState({ location: "", intrest: "" });
-  const [location, setLocation] = useState(filter.location);
-
-  useEffect(() => {
-    setLocation(filter.location);
-  }, [filter]);
-
-  const postsCollection = collection(db, "posts");
-  const usersCollection = collection(db, "users");
+  useEffect(() => {}, [filter]);
 
   async function createNewPost() {
-    getCurrentUserInfo()
-    // console.log("userInfo", userInfo);
+    // getCurrentUserPosts();
+    const userInfo = await getCurrentUserInfo();
+    try {
+      console.log("userInfo", userInfo[0]);
+    } catch (err) {
+      console.log(err);
+    }
     await addDoc(postsCollection, {
       ...newPost,
       time: serverTimestamp(),
-      userId: currentUser.uid,
-      userEmail: currentUser.email,
+      user: userInfo[0],
+      
     });
   }
 
   async function getCurrentUserPosts() {
-    const q = query(postsCollection, "userId", "==", currentUser.uid);
-  }
-  async function getCurrentUserInfo() {
-    const q = query(usersCollection, "userId", "==", currentUser.uid);
+    const q = query(postsCollection, where("userId", "==", currentUser.uid));
     const docSnap = await getDocs(q);
-    console.log("info",docSnap);
-    return docSnap
+    const postsArray = [];
+    docSnap.forEach((doc) => {
+      postsArray.push(doc.data());
+    });
+    console.log("user posts", postsArray);
   }
 
-  async function getAllPosts() {
-    const q = query(postsCollection);
+  const getCurrentUserInfo = useCallback(async () => {
+    console.log("currentUser.uid", currentUser.uid);
+    const q = query(usersCollection, where("userId", "==", currentUser.uid));
+    const docSnap = await getDocs(q);
+    const userArray = [];
+    docSnap.forEach((doc) => {
+      userArray.push(doc.data());
+    });
+    console.log("user ", userArray);
+
+    return userArray;
+  }, [currentUser]);
+
+  const getAllPosts = useCallback(async () => {
+    const q = query(postsCollection, orderBy("time", "desc"));
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
@@ -80,37 +91,20 @@ export function PostsProvider({ children }) {
     });
 
     setPosts([...postsArray]);
-  }
+  }, []);
 
-  async function getFilteredPosts() {
-    // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
-    const postsCollection = collection(db, "posts");
-    let q;
-    console.log("filter",filter);
-    if (filter.location ) {
-      console.log("location");
-      q = query(postsCollection, where("city", "==", filter.location));
-    }
-    if (filter.intrest ) {
-      console.log("intrest");
-      q = query(postsCollection,  where("intrest", "==", filter.intrest));
-    }
-    if (filter.location  && filter.intrest) {
-      console.log("intrest%location");
-      q = query(postsCollection, where("city", "==", filter.location), where("intrest", "==", filter.intrest));
-    }
+  const getFilteredPosts = useCallback(async () => {
+    let tempFilteredPosts = [...posts];
+    console.log(posts);
+    tempFilteredPosts = tempFilteredPosts.filter((post) =>
+      (filter.location
+        ? filter.location === "all" || filter.location === post.city
+        : true) && (filter.interest ? filter.interest === post.interest : true)
+    );
 
-   ;
-    const docSnap = await getDocs(q);
-    const postsArray = [];
-    docSnap.forEach((doc) => {
-      postsArray.push(doc.data());
-    });
-    console.log("postsArray", postsArray);
-    setFilteredPosts([...postsArray]);
-  }
-
-  useEffect(() => {}, []);
+  
+    setFilteredPosts([...tempFilteredPosts]);
+  }, [filter, posts]);
 
   const value = {
     createNewPost,
@@ -122,9 +116,8 @@ export function PostsProvider({ children }) {
     filter,
     setFilter,
     filteredPosts,
-    setFilter,
     getFilteredPosts,
-    getCurrentUserPosts
+    getCurrentUserPosts,
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>
