@@ -40,8 +40,6 @@ const NewPost = () => {
 
   const [chosenCity, setChosenCity] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [date, setDate] = useState("");
   const [level, setLevel] = useState("");
   const [spots, setSpots] = useState(15);
 
@@ -72,7 +70,19 @@ const NewPost = () => {
     }
   }
 
-  if (loading) return <Container sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}><CircularProgress  /></Container>;
+  if (loading)
+    return (
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "200px",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    );
 
   return (
     <>
@@ -157,7 +167,6 @@ const NewPost = () => {
           <TextField
             required
             onChange={(event) => {
-              setDate(event.target.value);
               setNewPost({ ...newPost, date: event.target.value });
             }}
             name="date"
@@ -179,7 +188,7 @@ const NewPost = () => {
               setNewPost({ ...newPost, level: event.target.value });
             }}
             name="level"
-            defaultValue="All levels"
+            value={level ? level : "All levels"}
             sx={{
               width: 300,
               mb: 0,
