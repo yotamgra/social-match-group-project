@@ -31,6 +31,7 @@ export function PostsProvider({ children }) {
   const [newPost, setNewPost] = useState({ description: "" });
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [filter, setFilter] = useState({ location: "", interest: "" });
 
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "amsterdam" },
@@ -40,25 +41,21 @@ export function PostsProvider({ children }) {
     { name: "All", id: "all" },
   ]);
 
-  useEffect(() => setFilter({ location: "", interest: "" }), []);
-
-  const [filter, setFilter] = useState({ location: "", interest: "" });
-
   useEffect(() => {}, [filter]);
 
   async function createNewPost() {
     // getCurrentUserPosts();
-    try{
-    const userInfo =  await getCurrentUserInfo();
-    console.log("userInfo", userInfo[0]);
-  }catch(err){
-    console.log(err);
-  }
+    const userInfo = await getCurrentUserInfo();
+    try {
+      console.log("userInfo", userInfo[0]);
+    } catch (err) {
+      console.log(err);
+    }
     await addDoc(postsCollection, {
       ...newPost,
       time: serverTimestamp(),
-      userId: currentUser.uid,
-      userEmail: currentUser.email,
+      user: userInfo[0],
+      
     });
   }
 
@@ -72,8 +69,8 @@ export function PostsProvider({ children }) {
     console.log("user posts", postsArray);
   }
 
-  const getCurrentUserInfo = useCallback(async ()=>{
-    console.log("currentUser.uid",currentUser.uid);
+  const getCurrentUserInfo = useCallback(async () => {
+    console.log("currentUser.uid", currentUser.uid);
     const q = query(usersCollection, where("userId", "==", currentUser.uid));
     const docSnap = await getDocs(q);
     const userArray = [];
@@ -83,8 +80,8 @@ export function PostsProvider({ children }) {
     console.log("user ", userArray);
 
     return userArray;
-  },[currentUser.uid])
-   
+  }, [currentUser.uid]);
+
   const getAllPosts = useCallback(async () => {
     const q = query(postsCollection, orderBy("time", "desc"));
     const docSnap = await getDocs(q);
@@ -111,8 +108,6 @@ export function PostsProvider({ children }) {
     setFilteredPosts([...tempFilteredPosts]);
   }, [filter, posts]);
 
-  useEffect(() => {}, []);
-
   const value = {
     createNewPost,
     newPost,
@@ -123,7 +118,6 @@ export function PostsProvider({ children }) {
     filter,
     setFilter,
     filteredPosts,
-    setFilter,
     getFilteredPosts,
     getCurrentUserPosts,
   };

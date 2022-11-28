@@ -40,7 +40,7 @@ function PresentPosts({ posts }) {
         <Container maxWidth="sm" sx={{ mb: 2 }}>
           <Card>
             <CardHeader
-              avatar={<Avatar>{post.userEmail[0].toUpperCase()}</Avatar>}
+              avatar={<Avatar>{post.user.email[0].toUpperCase()}</Avatar>}
               action={<Chip label={post.interest} />}
               title={post.title}
               subheader={`${post.time
