@@ -28,7 +28,14 @@ function PresentPosts({ posts }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState([]);
   const { currentUser } = useAuth();
-  const { deleteUserPost, changeInPosts, setChangeInPosts, setEditor } = usePosts();
+  const {
+    deleteUserPost,
+    changeInPosts,
+    setChangeInPosts,
+    setEditor,
+    editForm,
+    setEditForm,
+  } = usePosts();
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -41,7 +48,7 @@ function PresentPosts({ posts }) {
     }),
   }));
 
-  useEffect(()=>{},[posts])
+  useEffect(() => {}, [posts]);
 
   return posts.map((post, index) => {
     expanded.push(false);
@@ -102,20 +109,20 @@ function PresentPosts({ posts }) {
                     onClick={() => {
                       deleteUserPost(post.id);
 
-                      setChangeInPosts(true)
-                      
-
+                      setChangeInPosts(true);
                     }}
                   >
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton aria-label="edit"
-                   onClick={() => {
-                    navigate("/new-post")
-                    setChangeInPosts(true)
-                    setEditor(true)
-                    
-                  }}>
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => {
+                      setChangeInPosts(true);
+                      setEditor(true);
+                      setEditForm({...post})
+                      navigate("/new-post");
+                    }}
+                  >
                     <EditIcon />
                   </IconButton>
                   <Chip variant="outlined" sx={{ mr: 1 }} label={post.level} />

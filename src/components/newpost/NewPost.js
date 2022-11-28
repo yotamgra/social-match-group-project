@@ -35,6 +35,10 @@ const NewPost = () => {
     setFilter,
     loading,
     setLoading,
+    editor,
+    setEditor,
+    editForm,
+    setEditForm,
   } = usePosts();
   const navigate = useNavigate();
 
@@ -45,6 +49,13 @@ const NewPost = () => {
 
   useEffect(() => {
     setNewPost({ ...newPost, spots: 15 });
+    console.log("editor",editor);
+    if(editor){
+      setNewPost({...editForm})
+      setChosenCity(editForm.city)
+      setLevel(editForm.level)
+      setSpots(editForm.spots)
+    }
   }, []);
 
   const handleBlur = () => {
@@ -58,6 +69,7 @@ const NewPost = () => {
   async function handleSubmitPost() {
     try {
       setLoading(true);
+      setEditor(false)
       // setNewPost({...newPost, userinterestsList})
       console.log(newPost);
       await createNewPost();
@@ -109,6 +121,7 @@ const NewPost = () => {
               id="input-title"
               variant="outlined"
               fullWidth
+              value={newPost.title}
             />
           </CardContent>
           <CardContent>
@@ -125,10 +138,11 @@ const NewPost = () => {
               fullWidth
               rows={5}
               multiline
+              value={newPost.description}
             />
           </CardContent>
 
-          <Interest />
+          <Interest editInterest={editForm.interest} />
           <InputLabel
             id="select-city"
             sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
@@ -175,6 +189,7 @@ const NewPost = () => {
             type="datetime-local"
             size="small"
             color="warning"
+            value={newPost.date}
           />
           <InputLabel
             id="level"

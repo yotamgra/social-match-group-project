@@ -4,7 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { usePosts } from "../../contexts/PostsContext";
 import { InputLabel } from "@mui/material";
 
-export default function interestsTags() {
+export default function interestsTags({editInterest}) {
   const { newPost, setNewPost } = usePosts();
 
   return (
@@ -21,6 +21,7 @@ export default function interestsTags() {
         sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
         renderInput={(params) => <TextField {...params} color="warning" />}
         onChange={(event, value) => setNewPost({ ...newPost, interest: value })}
+        value={editInterest?editInterest:""}
       />
     </>
   );
