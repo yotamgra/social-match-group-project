@@ -13,6 +13,7 @@ import {
   Typography,
   CardActions,
   FilledInput,
+  Tooltip,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -104,27 +105,31 @@ function PresentPosts({ posts }) {
               </CardContent>
               {currentUser.uid === post.user.userId && (
                 <>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      deleteUserPost(post.id);
+                  <Tooltip title="Delete" placement="top">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => {
+                        deleteUserPost(post.id);
 
-                      setChangeInPosts(true);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => {
-                      setChangeInPosts(true);
-                      setEditor(true);
-                      setEditForm({...post})
-                      navigate("/new-post");
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
+                        setChangeInPosts(true);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Edit" placement="top">
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => {
+                        setChangeInPosts(true);
+                        setEditor(true);
+                        setEditForm({ ...post });
+                        navigate("/new-post");
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
                   <Chip variant="outlined" sx={{ mr: 1 }} label={post.level} />
                   <Chip
                     color="warning"
