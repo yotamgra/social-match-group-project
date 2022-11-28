@@ -50,9 +50,14 @@ function PresentPosts({ posts }) {
         <Container maxWidth="sm" sx={{ mb: 2 }}>
           <Card>
             <CardHeader
-              avatar={<Avatar>{post.user.email[0].toUpperCase()}</Avatar>}
-              action={<Chip label={post.interest} />}
-              title={post.title}
+              avatar={<Avatar>{post.user.name[0].toUpperCase()}</Avatar>}
+              action={<Chip color="warning" label={post.city} />}
+              title={
+                <Typography sx={{ fontWeight: 600 }}>
+                  {post.user.name.charAt(0).toUpperCase() +
+                    post.user.name.slice(1)}
+                </Typography>
+              }
               subheader={`${post.time
                 .toDate()
                 .toUTCString()
@@ -62,8 +67,8 @@ function PresentPosts({ posts }) {
                 .slice(0, 5)}`}
             />
             <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                {post.description}
+              <Typography sx={{ fontSize: 18 }} color="text.secondary">
+                {post.title}
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -88,7 +93,7 @@ function PresentPosts({ posts }) {
             </CardActions>
             <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography paragraph>Title:</Typography>
+                <Typography paragraph>{post.description}</Typography>
               </CardContent>
               {currentUser.uid === post.user.userId && (
                 <>
@@ -96,8 +101,10 @@ function PresentPosts({ posts }) {
                     aria-label="delete"
                     onClick={() => {
                       deleteUserPost(post.id);
+
                       setChangeInPosts(true)
                       
+
                     }}
                   >
                     <DeleteIcon />
@@ -105,6 +112,12 @@ function PresentPosts({ posts }) {
                   <IconButton aria-label="edit">
                     <EditIcon />
                   </IconButton>
+                  <Chip variant="outlined" sx={{ mr: 1 }} label={post.level} />
+                  <Chip
+                    color="warning"
+                    variant="outlined"
+                    label={post.interest}
+                  />
                 </>
               )}
             </Collapse>
