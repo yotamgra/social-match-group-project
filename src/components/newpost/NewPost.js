@@ -44,8 +44,9 @@ const NewPost = () => {
   } = usePosts();
   const navigate = useNavigate();
 
-  const [chosenCity, setChosenCity] = useState("");
+  const intialNewPost = {title:"", description:"", spots: 15, city:"", date:"", level:"", interest:""}
 
+  const [chosenCity, setChosenCity] = useState("");
   const [level, setLevel] = useState("");
   const [spots, setSpots] = useState(15);
 
@@ -76,6 +77,8 @@ const NewPost = () => {
         // EDIT POST
         editUserPost({ ...newPost })
         setEditor(false);
+        setNewPost({ ...intialNewPost });
+
       } else {
         await createNewPost();
         setFilter({ location: "", interest: "" });
