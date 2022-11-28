@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
-import Signup from "../signup/Signup";
+import Signup from "./Signup";
 import { useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { processFirebaseErrors } from "../../errors";

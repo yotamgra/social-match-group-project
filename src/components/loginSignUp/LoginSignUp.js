@@ -4,8 +4,8 @@ import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Login from "../login/Login";
-import Signup from "../signup/Signup";
+import Login from "./Login";
+import Signup from "./Signup";
 import Container from "@mui/material/Container";
 import { redirect } from "react-router-dom";
 
@@ -63,8 +63,8 @@ const LoginSignUp = () => {
             }}
           >
             <Tabs
-              variant="fullWidth" 
-              sx ={{flex:1}}
+              variant="fullWidth"
+              sx={{ flex: 1 }}
               value={value}
               onChange={handleTabChange}
               aria-label="basic tabs example"
