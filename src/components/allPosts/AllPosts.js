@@ -4,14 +4,15 @@ import { usePosts } from "../../contexts/PostsContext";
 import PresentPosts from "./PresentPosts";
 
 const AllPosts = () => {
-  const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts } =
+  const { posts, getAllPosts, filter, filteredPosts, getFilteredPosts, changeInPosts, setChangeInPosts } =
     usePosts();
 
   // const [isFiltered, setIsFiltered] = useState(false);
 
   useEffect(()=>{
     getAllPosts();
-  },[getAllPosts])
+    setChangeInPosts(false)
+  },[getAllPosts, changeInPosts, setChangeInPosts])
   
   
   const getFiltered = useCallback( async () => {
