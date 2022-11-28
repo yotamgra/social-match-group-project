@@ -49,40 +49,6 @@ const NewPost = () => {
     setNewPost({ ...newPost, spots: 15 });
   }, []);
 
-  const handleTitle = (event) => {
-    setNewPost({ ...newPost, title: event.target.value });
-  };
-
-  const handleDescription = (event) => {
-    setNewPost({ ...newPost, description: event.target.value });
-  };
-
-  const handleCity = (event) => {
-    setChosenCity(event.target.value);
-    setNewPost({ ...newPost, city: event.target.value });
-  };
-
-  const handleDate = (event) => {
-    setDate(event.target.value);
-    setNewPost({ ...newPost, date: event.target.value });
-  };
-
-  const handleLevel = (event) => {
-    setLevel(event.target.value);
-    setNewPost({ ...newPost, level: event.target.value });
-  };
-
-  const handleSliderChange = (event, newValue) => {
-    setSpots(newValue);
-    setNewPost({ ...newPost, spots: parseInt(newValue) });
-  };
-
-  const handleInputChange = (event) => {
-    setSpots(event.target.value === "" ? "" : Number(event.target.value));
-    setNewPost({ ...newPost, spots: parseInt(event.target.value) });
-    console.log(newPost);
-  };
-
   const handleBlur = () => {
     if (spots < 0) {
       setSpots(0);
@@ -123,24 +89,30 @@ const NewPost = () => {
         >
           <CardContent>
             <TextField
-              onChange={handleTitle}
+              required
+              onChange={(event) =>
+                setNewPost({ ...newPost, title: event.target.value })
+              }
+              name="title"
               placeholder="Title"
               color="warning"
-              id="outlined-basic"
+              id="input-title"
               variant="outlined"
               fullWidth
-              required
             />
           </CardContent>
           <CardContent>
             <TextField
-              onChange={handleDescription}
+              required
+              onChange={(event) =>
+                setNewPost({ ...newPost, description: event.target.value })
+              }
+              name="description"
               placeholder="New Post"
               color="warning"
-              id="outlined-basic"
+              id="input-newpost"
               variant="outlined"
               fullWidth
-              required
               rows={5}
               multiline
             />
@@ -154,13 +126,17 @@ const NewPost = () => {
             City
           </InputLabel>
           <Select
+            required
+            onChange={(event) => {
+              setChosenCity(event.target.value);
+              setNewPost({ ...newPost, city: event.target.value });
+            }}
+            name="city"
             sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
             size="small"
             color="warning"
             id="select-city"
-            required
             value={chosenCity}
-            onChange={handleCity}
           >
             {cities &&
               cities.map((city) => {
@@ -179,23 +155,31 @@ const NewPost = () => {
             Date
           </InputLabel>
           <TextField
+            required
+            onChange={(event) => {
+              setDate(event.target.value);
+              setNewPost({ ...newPost, date: event.target.value });
+            }}
+            name="date"
             sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
             id="date"
             type="datetime-local"
             size="small"
-            required
             color="warning"
-            onChange={handleDate}
           />
           <InputLabel
-            id="date"
+            id="level"
             sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
           >
             Level
           </InputLabel>
           <RadioGroup
-            onChange={handleLevel}
-            defaultValue="any"
+            onChange={(event) => {
+              setLevel(event.target.value);
+              setNewPost({ ...newPost, level: event.target.value });
+            }}
+            name="level"
+            defaultValue="All levels"
             sx={{
               width: 300,
               mb: 0,
@@ -204,19 +188,27 @@ const NewPost = () => {
               justifyContent: "space-center",
             }}
           >
-            <FormControlLabel value="any" control={<Radio />} label="Any" />
             <FormControlLabel
-              value="beginner"
+              color="warning"
+              value="All levels"
+              control={<Radio />}
+              label="All levels"
+            />
+            <FormControlLabel
+              color="warning"
+              value="Beginner"
               control={<Radio />}
               label="Beginner"
             />
             <FormControlLabel
-              value="intermediate"
+              color="warning"
+              value="Intermediate"
               control={<Radio />}
               label="Intermediate"
             />
             <FormControlLabel
-              value="advanced"
+              color="warning"
+              value="Advanced"
               control={<Radio />}
               label="Advanced"
             />
@@ -237,14 +229,29 @@ const NewPost = () => {
                   valueLabelDisplay="on"
                   color="warning"
                   value={typeof spots === "number" ? spots : 0}
-                  onChange={handleSliderChange}
+                  onChange={(event, newValue) => {
+                    setSpots(newValue);
+                    setNewPost({ ...newPost, spots: parseInt(newValue) });
+                  }}
                 />
               </Grid>
               <Grid item>
                 <Input
+                  required
+                  onChange={(event) => {
+                    setSpots(
+                      event.target.value === ""
+                        ? ""
+                        : Number(event.target.value)
+                    );
+                    setNewPost({
+                      ...newPost,
+                      spots: parseInt(event.target.value),
+                    });
+                  }}
+                  name="spots"
                   value={spots}
                   size="small"
-                  onChange={handleInputChange}
                   onBlur={handleBlur}
                   inputProps={{
                     step: 1,
@@ -257,13 +264,12 @@ const NewPost = () => {
             </Grid>
           </Box>
           <Button
+            onClick={handleSubmitPost}
             color="warning"
             sx={{ width: 300, mb: 2, ml: "auto", mr: "auto" }}
             variant="contained"
             disableElevation
             endIcon={<KeyboardArrowRight />}
-            // onMouseOver={handleSubmitPost}
-            onClick={handleSubmitPost}
           >
             SUBMIT
           </Button>
