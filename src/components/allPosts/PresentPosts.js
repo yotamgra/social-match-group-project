@@ -56,8 +56,8 @@ function PresentPosts({ posts }) {
                 .toUTCString()
                 .slice(5, 16)}, ${post.time
                 .toDate()
-                .toUTCString()
-                .slice(16, 22)}`}
+                .toTimeString()
+                .slice(0, 5)}`}
             />
             <CardContent>
               <Typography variant="body2" color="text.secondary">
@@ -94,7 +94,7 @@ function PresentPosts({ posts }) {
                     aria-label="delete"
                     onClick={() => {
                       deleteUserPost(post.id);
-                      navigate("/")
+                      navigate("/");
                     }}
                   >
                     <DeleteIcon />
