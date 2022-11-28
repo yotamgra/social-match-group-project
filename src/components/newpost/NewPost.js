@@ -38,6 +38,8 @@ const NewPost = () => {
     editor,
     setEditor,
     editForm,
+    editUserPost,
+    setChangeInPosts,
     setEditForm,
   } = usePosts();
   const navigate = useNavigate();
@@ -49,12 +51,13 @@ const NewPost = () => {
 
   useEffect(() => {
     setNewPost({ ...newPost, spots: 15 });
-    console.log("editor",editor);
-    if(editor){
-      setNewPost({...editForm})
-      setChosenCity(editForm.city)
-      setLevel(editForm.level)
-      setSpots(editForm.spots)
+    console.log("editor", editor);
+    if (editor) {
+      setChangeInPosts(true);
+      setNewPost({ ...editForm });
+      setChosenCity(editForm.city);
+      setLevel(editForm.level);
+      setSpots(editForm.spots);
     }
   }, []);
 
@@ -69,12 +72,15 @@ const NewPost = () => {
   async function handleSubmitPost() {
     try {
       setLoading(true);
-      setEditor(false)
-      // setNewPost({...newPost, userinterestsList})
-      console.log(newPost);
-      await createNewPost();
+      if (editor) {
+        // EDIT POST
+        editUserPost({ ...newPost })
+        setEditor(false);
+      } else {
+        await createNewPost();
+        setFilter({ location: "", interest: "" });
+      }
       setLoading(false);
-      setFilter({ location: "", interest: "" });
       navigate("/");
     } catch (err) {
       console.log(err);
