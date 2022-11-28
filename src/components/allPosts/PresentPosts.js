@@ -58,10 +58,10 @@ function PresentPosts({ posts }) {
                     post.user.name.slice(1)}
                 </Typography>
               }
-              subheader={`${post.time
+              subheader={`${post.publishTime
                 .toDate()
                 .toUTCString()
-                .slice(5, 16)}, ${post.time
+                .slice(5, 16)}, ${post.publishTime
                 .toDate()
                 .toTimeString()
                 .slice(0, 5)}`}

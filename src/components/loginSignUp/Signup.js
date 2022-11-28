@@ -69,7 +69,7 @@ const Signup = () => {
   }
   useEffect(() => {}, []);
 
-  if (loading) return <Container sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "200px",git a width:"100%" }}><CircularProgress  /></Container>;
+  if (loading) return <Container sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "200px", width:"100%" }}><CircularProgress  /></Container>;
 
   return (
     <>

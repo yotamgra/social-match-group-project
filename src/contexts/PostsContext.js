@@ -58,7 +58,7 @@ export function PostsProvider({ children }) {
     }
     await addDoc(postsCollection, {
       ...newPost,
-      time: serverTimestamp(),
+      publishTime: serverTimestamp(),
       user: userInfo[0],
     });
   }
@@ -87,7 +87,7 @@ export function PostsProvider({ children }) {
   }, [currentUser]);
 
   const getAllPosts = useCallback(async () => {
-    const q = query(postsCollection, orderBy("time", "desc"));
+    const q = query(postsCollection, orderBy("publishTime", "desc"));
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
