@@ -28,12 +28,15 @@ const usersCollection = collection(db, "users");
 
 export function PostsProvider({ children }) {
   const { currentUser } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [newPost, setNewPost] = useState({ description: "" });
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState({ location: "", interest: "" });
   const [changeInPosts, setChangeInPosts] = useState(false)
+  const [editor, setEditor] = useState(false)
+  const [editForm, setEditForm] = useState("")
+  
 
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "Amsterdam" },
@@ -55,7 +58,7 @@ export function PostsProvider({ children }) {
     }
     await addDoc(postsCollection, {
       ...newPost,
-      time: serverTimestamp(),
+      publishTime: serverTimestamp(),
       user: userInfo[0],
     });
   }
@@ -84,7 +87,7 @@ export function PostsProvider({ children }) {
   }, [currentUser]);
 
   const getAllPosts = useCallback(async () => {
-    const q = query(postsCollection, orderBy("time", "desc"));
+    const q = query(postsCollection, orderBy("publishTime", "desc"));
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
@@ -128,8 +131,13 @@ export function PostsProvider({ children }) {
     deleteUserPost,
 
     changeInPosts, 
-    setChangeInPosts
-
+    setChangeInPosts,
+    editor, 
+    setEditor,
+    editForm, 
+    setEditForm,
+    loading, 
+    setLoading
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>

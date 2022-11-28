@@ -12,12 +12,14 @@ import {
   RadioGroup,
   Radio,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { processFirebaseErrors } from "../../errors";
+import { Container } from "react-bootstrap";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -67,7 +69,7 @@ const Signup = () => {
   }
   useEffect(() => {}, []);
 
-  if (loading) return <div>loading...</div>;
+  if (loading) return <Container sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "200px", width:"100%" }}><CircularProgress  /></Container>;
 
   return (
     <>

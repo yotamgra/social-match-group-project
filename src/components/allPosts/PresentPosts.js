@@ -28,7 +28,7 @@ function PresentPosts({ posts }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState([]);
   const { currentUser } = useAuth();
-  const { deleteUserPost, changeInPosts, setChangeInPosts } = usePosts();
+  const { deleteUserPost, changeInPosts, setChangeInPosts, setEditor } = usePosts();
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -58,10 +58,10 @@ function PresentPosts({ posts }) {
                     post.user.name.slice(1)}
                 </Typography>
               }
-              subheader={`${post.time
+              subheader={`${post.publishTime
                 .toDate()
                 .toUTCString()
-                .slice(5, 16)}, ${post.time
+                .slice(5, 16)}, ${post.publishTime
                 .toDate()
                 .toTimeString()
                 .slice(0, 5)}`}
@@ -109,7 +109,13 @@ function PresentPosts({ posts }) {
                   >
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton aria-label="edit">
+                  <IconButton aria-label="edit"
+                   onClick={() => {
+                    navigate("/new-post")
+                    setChangeInPosts(true)
+                    setEditor(true)
+                    
+                  }}>
                     <EditIcon />
                   </IconButton>
                   <Chip variant="outlined" sx={{ mr: 1 }} label={post.level} />

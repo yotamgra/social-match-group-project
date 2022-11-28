@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   FormControlLabel,
   Grid,
   Input,
@@ -26,7 +27,15 @@ import Interest from "./Interest";
 import { useNavigate } from "react-router-dom";
 
 const NewPost = () => {
-  const { createNewPost, newPost, setNewPost, cities, setFilter } = usePosts();
+  const {
+    createNewPost,
+    newPost,
+    setNewPost,
+    cities,
+    setFilter,
+    loading,
+    setLoading,
+  } = usePosts();
   const navigate = useNavigate();
 
   const [chosenCity, setChosenCity] = useState("");
@@ -50,15 +59,20 @@ const NewPost = () => {
 
   async function handleSubmitPost() {
     try {
+      setLoading(true);
       // setNewPost({...newPost, userinterestsList})
       console.log(newPost);
       await createNewPost();
+      setLoading(false);
       setFilter({ location: "", interest: "" });
       navigate("/");
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   }
+
+  if (loading) return <Container sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}><CircularProgress  /></Container>;
 
   return (
     <>
