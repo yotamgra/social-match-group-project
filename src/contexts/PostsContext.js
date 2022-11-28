@@ -35,10 +35,10 @@ export function PostsProvider({ children }) {
   const [filter, setFilter] = useState({ location: "", interest: "" });
 
   const [cities, setCities] = useState([
-    { name: "Amsterdam", id: "amsterdam" },
-    { name: "London", id: "london" },
-    { name: "Stockholm", id: "stockholm" },
-    { name: "Tel Aviv", id: "telaviv" },
+    { name: "Amsterdam", id: "Amsterdam" },
+    { name: "London", id: "London" },
+    { name: "Stockholm", id: "Stockholm" },
+    { name: "Tel Aviv", id: "Telaviv" },
     { name: "All", id: "all" },
   ]);
 
@@ -106,12 +106,11 @@ export function PostsProvider({ children }) {
     setFilteredPosts([...tempFilteredPosts]);
   }, [filter, posts]);
 
- // DELETE
- const deleteUserPost = async (postId) => {
-  const docRef = doc(db, "posts", postId);
-  await deleteDoc(docRef);
-};
-
+  // DELETE
+  const deleteUserPost = async (postId) => {
+    const docRef = doc(db, "posts", postId);
+    await deleteDoc(docRef);
+  };
 
   const value = {
     createNewPost,
@@ -125,7 +124,7 @@ export function PostsProvider({ children }) {
     filteredPosts,
     getFilteredPosts,
     getCurrentUserPosts,
-    deleteUserPost
+    deleteUserPost,
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>
