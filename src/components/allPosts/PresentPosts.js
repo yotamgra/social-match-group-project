@@ -20,10 +20,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
 import { Container } from "@mui/system";
-import { Button } from "react-bootstrap";
+import { useAuth } from "../../contexts/AuthContext";
+import { usePosts } from "../../contexts/PostsContext";
+import { useNavigate } from "react-router-dom";
 
 function PresentPosts({ posts }) {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState([]);
+  const { currentUser } = useAuth();
+  const { deleteUserPost } = usePosts();
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -83,12 +88,22 @@ function PresentPosts({ posts }) {
               <CardContent>
                 <Typography paragraph>Title:</Typography>
               </CardContent>
-              <IconButton aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-              <IconButton aria-label="edit">
-                <EditIcon />
-              </IconButton>
+              {currentUser.uid === post.user.userId && (
+                <>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      deleteUserPost(post.id);
+                      navigate("/")
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton aria-label="edit">
+                    <EditIcon />
+                  </IconButton>
+                </>
+              )}
             </Collapse>
           </Card>
         </Container>
