@@ -5,7 +5,11 @@ import {
   Button,
   Card,
   CardContent,
+  FormControl,
   FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
   Grid,
   Input,
   InputLabel,
@@ -15,10 +19,10 @@ import {
   Select,
   Slider,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { usePosts } from "../../contexts/PostsContext";
 import Navbar from "../navbar/Navbar";
@@ -26,10 +30,10 @@ import Interest from "./Interest";
 
 const NewPost = () => {
   const { createNewPost, newPost, setNewPost, cities, setFilter } = usePosts();
+  const navigate = useNavigate();
 
   const [chosenCity, setChosenCity] = useState("");
 
-  const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [level, setLevel] = useState("");
   const [spots, setSpots] = useState(15);
@@ -37,40 +41,6 @@ const NewPost = () => {
   useEffect(() => {
     setNewPost({ ...newPost, spots: 15 });
   }, []);
-
-  const handleTitle = (event) => {
-    setNewPost({ ...newPost, title: event.target.value });
-  };
-
-  const handleDescription = (event) => {
-    setNewPost({ ...newPost, description: event.target.value });
-  };
-
-  const handleCity = (event) => {
-    setChosenCity(event.target.value);
-    setNewPost({ ...newPost, city: event.target.value });
-  };
-
-  const handleDate = (event) => {
-    setDate(event.target.value);
-    setNewPost({ ...newPost, date: event.target.value });
-  };
-
-  const handleLevel = (event) => {
-    setLevel(event.target.value);
-    setNewPost({ ...newPost, level: event.target.value });
-  };
-
-  const handleSliderChange = (event, newValue) => {
-    setSpots(newValue);
-    setNewPost({ ...newPost, spots: parseInt(newValue) });
-  };
-
-  const handleInputChange = (event) => {
-    setSpots(event.target.value === "" ? "" : Number(event.target.value));
-    setNewPost({ ...newPost, spots: parseInt(event.target.value) });
-    console.log(newPost);
-  };
 
   const handleBlur = () => {
     if (spots < 0) {
@@ -85,6 +55,7 @@ const NewPost = () => {
       // setNewPost({...newPost, userIntrestsList})
       console.log(newPost);
       await createNewPost();
+      navigate("/");
       setFilter({ location: "" });
     } catch (err) {
       console.log(err);
@@ -94,163 +65,205 @@ const NewPost = () => {
   return (
     <>
       <Navbar />
-      <Container maxWidth="sm">
-        <Card
-          sx={{
-            mt: 3,
-            mb: 5,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <CardContent>
-            <TextField
-              onChange={handleTitle}
-              placeholder="Title"
-              color="warning"
-              id="outlined-basic"
-              variant="outlined"
-              fullWidth
-              required
-            />
-          </CardContent>
-          <CardContent>
-            <TextField
-              onChange={handleDescription}
-              placeholder="New Post"
-              color="warning"
-              id="outlined-basic"
-              variant="outlined"
-              fullWidth
-              required
-              rows={5}
-              multiline
-            />
-          </CardContent>
-
-          <Interest />
-          <InputLabel
-            id="select-city"
-            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-          >
-            City
-          </InputLabel>
-          <Select
-            sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
-            size="small"
-            color="warning"
-            id="select-city"
-            required
-            value={chosenCity}
-            onChange={handleCity}
-          >
-            {cities &&
-              cities.map((city) => {
-                return (
-                  <MenuItem value={city.id} key={city.id}>
-                    {city.name}
-                  </MenuItem>
-                );
-              })}
-          </Select>
-
-          <InputLabel
-            id="date"
-            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-          >
-            Date
-          </InputLabel>
-          <TextField
-            sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
-            id="date"
-            type="datetime-local"
-            size="small"
-            required
-            color="warning"
-            onChange={handleDate}
-          />
-          <InputLabel
-            id="date"
-            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-          >
-            Level
-          </InputLabel>
-          <RadioGroup
-            onChange={handleLevel}
-            defaultValue="any"
+      <Container>
+        <form onSubmit={handleSubmitPost}>
+          <Card
             sx={{
-              width: 300,
-              mb: 0,
-              ml: "auto",
-              mr: "auto",
-              justifyContent: "space-center",
+              mt: 3,
+              mb: 5,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
             }}
           >
-            <FormControlLabel value="any" control={<Radio />} label="Any" />
-            <FormControlLabel
-              value="beginner"
-              control={<Radio />}
-              label="Beginner"
+            <CardContent>
+              <TextField
+                required
+                onChange={(event) =>
+                  setNewPost({ ...newPost, title: event.target.value })
+                }
+                name="title"
+                placeholder="Title"
+                color="warning"
+                id="input-title"
+                variant="outlined"
+                fullWidth
+              />
+            </CardContent>
+            <CardContent>
+              <TextField
+                required
+                onChange={(event) =>
+                  setNewPost({ ...newPost, description: event.target.value })
+                }
+                name="description"
+                placeholder="New Post"
+                color="warning"
+                id="input-newpost"
+                variant="outlined"
+                fullWidth
+                rows={5}
+                multiline
+              />
+            </CardContent>
+
+            <Interest />
+            <InputLabel
+              id="select-city"
+              sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+            >
+              City
+            </InputLabel>
+            <Select
+              required
+              onChange={(event) => {
+                setChosenCity(event.target.value);
+                setNewPost({ ...newPost, city: event.target.value });
+              }}
+              name="city"
+              sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+              size="small"
+              color="warning"
+              id="select-city"
+              value={chosenCity}
+            >
+              {cities &&
+                cities.map((city) => {
+                  return (
+                    <MenuItem value={city.id} key={city.id}>
+                      {city.name}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+
+            <InputLabel
+              id="date"
+              sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+            >
+              Date
+            </InputLabel>
+            <TextField
+              required
+              onChange={(event) => {
+                setDate(event.target.value);
+                setNewPost({ ...newPost, date: event.target.value });
+              }}
+              name="date"
+              sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
+              id="date"
+              type="datetime-local"
+              size="small"
+              color="warning"
             />
-            <FormControlLabel
-              value="intermediate"
-              control={<Radio />}
-              label="Intermediate"
-            />
-            <FormControlLabel
-              value="advanced"
-              control={<Radio />}
-              label="Advanced"
-            />
-          </RadioGroup>
-          <InputLabel
-            id="date"
-            sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
-          >
-            Spots
-          </InputLabel>
-          <Box sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item>
-                <GroupsIcon />
+            <InputLabel
+              id="level"
+              sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+            >
+              Level
+            </InputLabel>
+            <RadioGroup
+              onChange={(event) => {
+                setLevel(event.target.value);
+                setNewPost({ ...newPost, level: event.target.value });
+              }}
+              name="level"
+              defaultValue="All levels"
+              sx={{
+                width: 300,
+                mb: 0,
+                ml: "auto",
+                mr: "auto",
+                justifyContent: "space-center",
+              }}
+            >
+              <FormControlLabel
+                color="warning"
+                value="All levels"
+                control={<Radio />}
+                label="All levels"
+              />
+              <FormControlLabel
+                color="warning"
+                value="Beginner"
+                control={<Radio />}
+                label="Beginner"
+              />
+              <FormControlLabel
+                color="warning"
+                value="Intermediate"
+                control={<Radio />}
+                label="Intermediate"
+              />
+              <FormControlLabel
+                color="warning"
+                value="Advanced"
+                control={<Radio />}
+                label="Advanced"
+              />
+            </RadioGroup>
+            <InputLabel
+              id="date"
+              sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
+            >
+              Spots
+            </InputLabel>
+            <Box sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <GroupsIcon />
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    valueLabelDisplay="on"
+                    color="warning"
+                    value={typeof spots === "number" ? spots : 0}
+                    onChange={(event, newValue) => {
+                      setSpots(newValue);
+                      setNewPost({ ...newPost, spots: parseInt(newValue) });
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Input
+                    required
+                    onChange={(event) => {
+                      setSpots(
+                        event.target.value === ""
+                          ? ""
+                          : Number(event.target.value)
+                      );
+                      setNewPost({
+                        ...newPost,
+                        spots: parseInt(event.target.value),
+                      });
+                    }}
+                    name="spots"
+                    value={spots}
+                    size="small"
+                    onBlur={handleBlur}
+                    inputProps={{
+                      step: 1,
+                      min: 0,
+                      max: 100,
+                      type: "number",
+                    }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs>
-                <Slider
-                  valueLabelDisplay="on"
-                  color="warning"
-                  value={typeof spots === "number" ? spots : 0}
-                  onChange={handleSliderChange}
-                />
-              </Grid>
-              <Grid item>
-                <Input
-                  value={spots}
-                  size="small"
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  inputProps={{
-                    step: 1,
-                    min: 0,
-                    max: 100,
-                    type: "number",
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Button
-            color="warning"
-            sx={{ width: 300, mb: 2, ml: "auto", mr: "auto" }}
-            variant="contained"
-            disableElevation
-            endIcon={<KeyboardArrowRight />}
-            // onMouseOver={handleSubmitPost}
-            onClick={handleSubmitPost}
-          >
-            SUBMIT
-          </Button>
-        </Card>
+            </Box>
+            <Button
+              type="submit"
+              color="warning"
+              sx={{ width: 300, mb: 2, ml: "auto", mr: "auto" }}
+              variant="contained"
+              disableElevation
+              endIcon={<KeyboardArrowRight />}
+            >
+              SUBMIT
+            </Button>
+          </Card>
+        </form>
       </Container>
     </>
   );
