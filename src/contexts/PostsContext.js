@@ -80,7 +80,7 @@ export function PostsProvider({ children }) {
     console.log("user ", userArray);
 
     return userArray;
-  }, [currentUser.uid]);
+  }, [currentUser]);
 
   const getAllPosts = useCallback(async () => {
     const q = query(postsCollection, orderBy("time", "desc"));
@@ -97,14 +97,12 @@ export function PostsProvider({ children }) {
     let tempFilteredPosts = [...posts];
     console.log(posts);
     tempFilteredPosts = tempFilteredPosts.filter((post) =>
-      filter.location
+      (filter.location
         ? filter.location === "all" || filter.location === post.city
-        : true
+        : true) && (filter.interest ? filter.interest === post.interest : true)
     );
 
-    tempFilteredPosts = tempFilteredPosts.filter((post) =>
-      filter.interest ? filter.interest === post.interest : true
-    );
+  
     setFilteredPosts([...tempFilteredPosts]);
   }, [filter, posts]);
 
