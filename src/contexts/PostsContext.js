@@ -30,21 +30,20 @@ export function PostsProvider({ children }) {
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   const [cities, setCities] = useState([
-    { name: "Amsterdam", id: "amsterdam" },
-    { name: "London", id: "london" },
-    { name: "Stockholm", id: "stockholm" },
-    { name: "Tel Aviv", id: "telaviv" },
+    { name: "Amsterdam", id: "Amsterdam" },
+    { name: "London", id: "London" },
+    { name: "Stockholm", id: "Stockholm" },
+    { name: "Tel Aviv", id: "Tel Aviv" },
   ]);
 
-  useEffect(()=>setFilter({location:""}),[])
+  useEffect(() => setFilter({ location: "" }), []);
 
-  const [filter, setFilter] = useState({location:""});
-  const [location,setLocation] = useState(filter.location)
+  const [filter, setFilter] = useState({ location: "" });
+  const [location, setLocation] = useState(filter.location);
 
-  useEffect(()=>{
-    setLocation(filter.location)
-  },[filter])
-  
+  useEffect(() => {
+    setLocation(filter.location);
+  }, [filter]);
 
   const postsCollection = collection(db, "posts");
 
@@ -63,28 +62,28 @@ export function PostsProvider({ children }) {
   }
 
   async function getAllPosts() {
-
     const q = query(postsCollection, where("userId", "!=", "-1"));
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
       postsArray.push(doc.data());
     });
-   
+
     setPosts([...postsArray]);
   }
 
-
-
   async function getFilteredPosts() {
-
-    const q = query(postsCollection, where("city", "==", filter.location),where("userId", "==", currentUser.uid));
+    const q = query(
+      postsCollection,
+      where("city", "==", filter.location),
+      where("userId", "==", currentUser.uid)
+    );
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
       postsArray.push(doc.data());
     });
-   console.log("postsArray",postsArray);
+    console.log("postsArray", postsArray);
     setFilteredPosts([...postsArray]);
   }
 
@@ -97,11 +96,11 @@ export function PostsProvider({ children }) {
     getAllPosts,
     posts,
     cities,
-    filter, 
+    filter,
     setFilter,
     filteredPosts,
     setFilter,
-    getFilteredPosts
+    getFilteredPosts,
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>

@@ -9,18 +9,17 @@ export default function IntrestsTags() {
 
   return (
     <>
-      <InputLabel id="date" sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>
-        Type your interest
-      </InputLabel>
+      {/* <InputLabel id="date">Type your interest</InputLabel> */}
       <Autocomplete
+        required
+        onChange={(event, value) => setNewPost({ ...newPost, interest: value })}
+        name="interest"
         disablePortal
         id="autoselect-interest"
         size="small"
-        required
         options={intrestsOptions}
         sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
         renderInput={(params) => <TextField {...params} color="warning" />}
-        onChange={(event, value) => setNewPost({ ...newPost, interest: value })}
       />
     </>
   );

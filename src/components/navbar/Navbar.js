@@ -18,7 +18,8 @@ const Navbar = () => {
   const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
 
-  async function handleLogout() {
+  async function handleLogout(event) {
+    event.preventDefault();
     try {
       await logout();
       navigate("/login-signup");

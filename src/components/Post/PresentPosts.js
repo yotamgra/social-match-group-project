@@ -41,8 +41,8 @@ function PresentPosts({ posts }) {
           <Card>
             <CardHeader
               avatar={<Avatar>{post.userEmail[0].toUpperCase()}</Avatar>}
-              action={<Chip label={post.interest} />}
-              title={post.title}
+              action={<Chip color="warning" label={post.city} />}
+              title={<Typography sx={{ fontWeight: 600 }}>Name</Typography>}
               subheader={`${post.time
                 .toDate()
                 .toUTCString()
@@ -52,8 +52,8 @@ function PresentPosts({ posts }) {
                 .slice(16, 22)}`}
             />
             <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                {post.description}
+              <Typography sx={{ fontSize: 18 }} color="text.secondary">
+                {post.title}
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -78,7 +78,32 @@ function PresentPosts({ posts }) {
             </CardActions>
             <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography paragraph>Title:</Typography>
+                <Typography paragraph>{post.description}</Typography>
+                <Container
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Container
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Chip
+                      sx={{ mr: 1 }}
+                      variant="outlined"
+                      color="warning"
+                      label={post.interest}
+                    />
+                    <Chip variant="outlined" label={post.level} />
+                  </Container>
+                  <Typography sx={{ fontSize: 18 }}>
+                    Free spots: ... of {post.spots}
+                  </Typography>
+                </Container>
               </CardContent>
             </Collapse>
           </Card>
