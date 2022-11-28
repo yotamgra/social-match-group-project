@@ -12,6 +12,7 @@ import {
   getDoc,
   getDocs,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { useAuth } from "./AuthContext";
@@ -55,7 +56,6 @@ export function PostsProvider({ children }) {
       ...newPost,
       time: serverTimestamp(),
       user: userInfo[0],
-      
     });
   }
 
@@ -87,7 +87,7 @@ export function PostsProvider({ children }) {
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
-      postsArray.push(doc.data());
+      postsArray.push({ ...doc.data(), id: doc.id });
     });
 
     setPosts([...postsArray]);
@@ -96,15 +96,22 @@ export function PostsProvider({ children }) {
   const getFilteredPosts = useCallback(async () => {
     let tempFilteredPosts = [...posts];
     console.log(posts);
-    tempFilteredPosts = tempFilteredPosts.filter((post) =>
-      (filter.location
-        ? filter.location === "all" || filter.location === post.city
-        : true) && (filter.interest ? filter.interest === post.interest : true)
+    tempFilteredPosts = tempFilteredPosts.filter(
+      (post) =>
+        (filter.location
+          ? filter.location === "all" || filter.location === post.city
+          : true) &&
+        (filter.interest ? filter.interest === post.interest : true)
     );
-
-  
     setFilteredPosts([...tempFilteredPosts]);
   }, [filter, posts]);
+
+ // DELETE
+ const deleteUserPost = async (postId) => {
+  const docRef = doc(db, "posts", postId);
+  await deleteDoc(docRef);
+};
+
 
   const value = {
     createNewPost,
@@ -118,6 +125,7 @@ export function PostsProvider({ children }) {
     filteredPosts,
     getFilteredPosts,
     getCurrentUserPosts,
+    deleteUserPost
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>
