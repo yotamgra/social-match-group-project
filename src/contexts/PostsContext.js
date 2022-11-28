@@ -33,6 +33,7 @@ export function PostsProvider({ children }) {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState({ location: "", interest: "" });
+  const [changeInPosts, setChangeInPosts] = useState(false)
 
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "Amsterdam" },
@@ -125,6 +126,10 @@ export function PostsProvider({ children }) {
     getFilteredPosts,
     getCurrentUserPosts,
     deleteUserPost,
+
+    changeInPosts, 
+    setChangeInPosts
+
   };
   return (
     <PostsContext.Provider value={value}>{children}</PostsContext.Provider>

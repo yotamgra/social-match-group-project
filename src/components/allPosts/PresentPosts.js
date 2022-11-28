@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 
 import {
@@ -28,7 +28,7 @@ function PresentPosts({ posts }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState([]);
   const { currentUser } = useAuth();
-  const { deleteUserPost } = usePosts();
+  const { deleteUserPost, changeInPosts, setChangeInPosts } = usePosts();
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -40,6 +40,8 @@ function PresentPosts({ posts }) {
       duration: theme.transitions.duration.shortest,
     }),
   }));
+
+  useEffect(()=>{},[posts])
 
   return posts.map((post, index) => {
     expanded.push(false);
@@ -99,7 +101,10 @@ function PresentPosts({ posts }) {
                     aria-label="delete"
                     onClick={() => {
                       deleteUserPost(post.id);
-                      navigate("/");
+
+                      setChangeInPosts(true)
+                      
+
                     }}
                   >
                     <DeleteIcon />
