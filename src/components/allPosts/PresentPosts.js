@@ -35,6 +35,7 @@ function PresentPosts({ posts }) {
     setChangeInPosts,
     setEditor,
     setEditForm,
+    editUserPost
   } = usePosts();
 
   const ExpandMore = styled((props) => {
@@ -85,7 +86,11 @@ function PresentPosts({ posts }) {
               <IconButton>
                 <EmailIcon />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={()=>{
+                const participantsTempArray = [...post.participants]
+                participantsTempArray.push(currentUser.uid)
+                editUserPost({...post, participants: [...participantsTempArray]})
+              }}>
                 <AddIcon /> Apply
               </IconButton>
               <ExpandMore
@@ -149,3 +154,4 @@ function PresentPosts({ posts }) {
 }
 
 export default PresentPosts;
+
