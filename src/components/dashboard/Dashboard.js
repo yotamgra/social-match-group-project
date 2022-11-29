@@ -5,11 +5,12 @@ import { useAuth } from "../../contexts/AuthContext";
 import NewPost from "../newpost/NewPost";
 import AllPosts from "../allPosts/AllPosts";
 import Filter from "../filter/Filter";
-
+import { usePosts } from "../../contexts/PostsContext";
 
 const Dashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { setEditor } = usePosts();
 
   async function handleLogout() {
     try {
@@ -24,7 +25,14 @@ const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <button onClick={()=>navigate("/new-post")}>Create New Post</button>
+      <button
+        onClick={() => {
+          setEditor(false);
+          navigate("/new-post");
+        }}
+      >
+        Create New Post
+      </button>
       <Filter />
       <AllPosts />
     </>

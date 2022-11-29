@@ -23,8 +23,8 @@ import { useEffect, useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
 import Navbar from "../navbar/Navbar";
-import Interest from "./Interest";
 import { useNavigate } from "react-router-dom";
+import InterestsTags from "./Interest";
 
 const NewPost = () => {
   const {
@@ -44,7 +44,15 @@ const NewPost = () => {
   } = usePosts();
   const navigate = useNavigate();
 
-  const intialNewPost = {title:"", description:"", spots: 15, city:"", date:"", level:"", interest:""}
+  const intialNewPost = {
+    title: "",
+    description: "",
+    spots: 15,
+    city: "",
+    date: "",
+    level: "",
+    interest: "",
+  };
 
   const [chosenCity, setChosenCity] = useState("");
   const [level, setLevel] = useState("");
@@ -59,6 +67,8 @@ const NewPost = () => {
       setChosenCity(editForm.city);
       setLevel(editForm.level);
       setSpots(editForm.spots);
+    } else {
+      setNewPost({ ...intialNewPost });
     }
   }, []);
 
@@ -75,10 +85,9 @@ const NewPost = () => {
       setLoading(true);
       if (editor) {
         // EDIT POST
-        editUserPost({ ...newPost })
+        editUserPost({ ...newPost });
         setEditor(false);
         setNewPost({ ...intialNewPost });
-
       } else {
         await createNewPost();
         setFilter({ location: "", interest: "" });
@@ -151,7 +160,7 @@ const NewPost = () => {
             />
           </CardContent>
 
-          <Interest editInterest={editForm.interest} />
+          <InterestsTags editInterest={editForm.interest} />
           <InputLabel
             id="select-city"
             sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
