@@ -116,6 +116,35 @@ export function PostsProvider({ children }) {
     await deleteDoc(docRef);
   };
 
+  
+  // async function getFilteredPosts() {
+  //   // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
+  //   const postsCollection = collection(db, "posts");
+  //   let q;
+  //   console.log("filter",filter);
+  //   if (filter.location ) {
+  //     console.log("location");
+  //     q = query(postsCollection, where("city", "==", filter.location));
+  //   }
+  //   if (filter.intrest ) {
+  //     console.log("intrest");
+  //     q = query(postsCollection,  where("intrest", "==", filter.intrest));
+  //   }
+  //   if (filter.location  && filter.intrest) {
+  //     console.log("intrest%location");
+  //     q = query(postsCollection, where("city", "==", filter.location), where("intrest", "==", filter.intrest));
+  //   }
+
+  //  ;
+  //   const docSnap = await getDocs(q);
+  //   const postsArray = [];
+  //   docSnap.forEach((doc) => {
+  //     postsArray.push(doc.data());
+  //   });
+  //   console.log("postsArray", postsArray);
+  //   setFilteredPosts([...postsArray]);
+  // }
+
   // UPDATE/PUT (SET)
   const editUserPost = async (editedPost) => {
     console.log("editedPost.id",editedPost);

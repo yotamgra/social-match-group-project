@@ -51,6 +51,7 @@ const NewPost = () => {
     date: "",
     level: "",
     interest: "",
+    participants:[]
   };
 
   
@@ -165,7 +166,7 @@ const NewPost = () => {
               />
             </CardContent>
 
-            <InterestsTags editInterest={editForm.interest} />
+            <InterestsTags editInterest={editor?editForm.interest:""} />
             <InputLabel
               id="select-city"
               sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
