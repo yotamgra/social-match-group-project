@@ -159,7 +159,7 @@ export function PostsProvider({ children }) {
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
-      postsArray.push(doc.data());
+      postsArray.push({ ...doc.data(), id: doc.id });
     });
     console.log("postsArray", postsArray);
     setFilteredPosts([...postsArray]);
