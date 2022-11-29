@@ -20,7 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { Container } from "@mui/system";
 import { useAuth } from "../../contexts/AuthContext";
 import { usePosts } from "../../contexts/PostsContext";
@@ -35,7 +35,7 @@ function PresentPosts({ posts }) {
     setChangeInPosts,
     setEditor,
     setEditForm,
-    editUserPost
+    editUserPost,
   } = usePosts();
 
   const ExpandMore = styled((props) => {
@@ -53,6 +53,7 @@ function PresentPosts({ posts }) {
 
   return posts.map((post, index) => {
     expanded.push(false);
+    console.log(currentUser.uid === post.user.userId);
     return (
       <div className="" key={index}>
         <Container maxWidth="sm" sx={{ mb: 2 }}>
@@ -86,13 +87,21 @@ function PresentPosts({ posts }) {
               <IconButton>
                 <EmailIcon />
               </IconButton>
-              <IconButton onClick={()=>{
-                const participantsTempArray = [...post.participants]
-                participantsTempArray.push(currentUser.uid)
-                editUserPost({...post, participants: [...participantsTempArray]})
-              }}>
-                <AddIcon /> Apply
-              </IconButton>
+
+              {currentUser.uid !== post.user.userId && (
+                <IconButton
+                  onClick={() => {
+                    const participantsTempArray = [...post.participants];
+                    participantsTempArray.push(currentUser.uid);
+                    editUserPost({
+                      ...post,
+                      participants: [...participantsTempArray],
+                    });
+                  }}
+                >
+                  <AddIcon /> Apply
+                </IconButton>
+              )}
               <ExpandMore
                 expand={expanded[index]}
                 onClick={() => {
@@ -154,4 +163,3 @@ function PresentPosts({ posts }) {
 }
 
 export default PresentPosts;
-
