@@ -22,7 +22,7 @@ import { InputLabel } from "@mui/material";
         sx={{ width: 300, mb: 1, ml: "auto", mr: "auto" }}
         renderInput={(params) => <TextField {...params} color="warning" />}
         onChange={(event, value) => setNewPost({ ...newPost, interest: value })}
-        value={editor?editInterest:""}
+        value={editor?editInterest:newPost.interest}
       />
     </>
   );
