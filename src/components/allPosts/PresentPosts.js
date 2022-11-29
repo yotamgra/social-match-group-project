@@ -20,6 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from '@mui/icons-material/Add';
 import { Container } from "@mui/system";
 import { useAuth } from "../../contexts/AuthContext";
 import { usePosts } from "../../contexts/PostsContext";
@@ -31,10 +32,8 @@ function PresentPosts({ posts }) {
   const { currentUser } = useAuth();
   const {
     deleteUserPost,
-    changeInPosts,
     setChangeInPosts,
     setEditor,
-    editForm,
     setEditForm,
   } = usePosts();
 
@@ -85,6 +84,9 @@ function PresentPosts({ posts }) {
               </IconButton>
               <IconButton>
                 <EmailIcon />
+              </IconButton>
+              <IconButton>
+                <AddIcon /> Apply
               </IconButton>
               <ExpandMore
                 expand={expanded[index]}
