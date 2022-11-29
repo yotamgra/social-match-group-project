@@ -53,29 +53,29 @@ const NewPost = () => {
     interest: "",
   };
 
-  const [chosenCity, setChosenCity] = useState("");
-  const [level, setLevel] = useState("");
-  const [spots, setSpots] = useState(15);
+  
+ 
+  
 
   useEffect(() => {
-    setNewPost({ ...newPost, spots: 15 });
+    setNewPost({ ...intialNewPost });
     console.log("editor", editor);
     if (editor) {
       setChangeInPosts(true);
       setNewPost({ ...editForm });
-      setChosenCity(editForm.city);
-      setLevel(editForm.level);
-      setSpots(editForm.spots);
+     
+     
+      
     } else {
       setNewPost({ ...intialNewPost });
     }
   }, []);
 
   const handleBlur = () => {
-    if (spots < 0) {
-      setSpots(0);
-    } else if (spots > 100) {
-      setSpots(100);
+    if (newPost.spots < 0) {
+      setNewPost({ ...newPost, spots: 0 });
+    } else if (newPost.spots > 100) {
+      setNewPost({ ...newPost, spots: 100 });
     }
   };
 
@@ -112,6 +112,11 @@ const NewPost = () => {
         <CircularProgress />
       </Container>
     );
+
+  console.log("newpost", newPost);
+ 
+  
+  
 
   return (
     <>
@@ -170,7 +175,6 @@ const NewPost = () => {
             <Select
               required
               onChange={(event) => {
-                setChosenCity(event.target.value);
                 setNewPost({ ...newPost, city: event.target.value });
               }}
               name="city"
@@ -178,7 +182,7 @@ const NewPost = () => {
               size="small"
               color="warning"
               id="select-city"
-              value={chosenCity}
+              value={newPost.city}
             >
               {cities &&
                 cities.map((city) => {
@@ -217,11 +221,11 @@ const NewPost = () => {
             </InputLabel>
             <RadioGroup
               onChange={(event) => {
-                setLevel(event.target.value);
+                
                 setNewPost({ ...newPost, level: event.target.value });
               }}
               name="level"
-              value={level ? level : "All levels"}
+              value={newPost.level ? newPost.level : "All levels"}
               sx={{
                 width: 300,
                 mb: 0,
@@ -270,9 +274,9 @@ const NewPost = () => {
                   <Slider
                     valueLabelDisplay="on"
                     color="warning"
-                    value={typeof spots === "number" ? spots : 0}
+                    value={typeof newPost.spots === "number" ? newPost.spots : 0}
                     onChange={(event, newValue) => {
-                      setSpots(newValue);
+                     
                       setNewPost({ ...newPost, spots: parseInt(newValue) });
                     }}
                   />
@@ -281,18 +285,18 @@ const NewPost = () => {
                   <Input
                     required
                     onChange={(event) => {
-                      setSpots(
-                        event.target.value === ""
-                          ? ""
-                          : Number(event.target.value)
-                      );
+                      // setSpots(
+                      //   event.target.value === ""
+                      //     ? ""
+                      //     : Number(event.target.value)
+                      // );
                       setNewPost({
                         ...newPost,
                         spots: parseInt(event.target.value),
                       });
                     }}
                     name="spots"
-                    value={spots}
+                    value={newPost.spots}
                     size="small"
                     onBlur={handleBlur}
                     inputProps={{
