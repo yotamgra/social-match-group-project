@@ -28,22 +28,33 @@ const postsCollection = collection(db, "posts");
 const usersCollection = collection(db, "users");
 
 export function PostsProvider({ children }) {
+  const intialNewPost = {
+    title: "",
+    description: "",
+    spots: 15,
+    city: "",
+    date: "",
+    level: "",
+    interest: "",
+    participants: [],
+  };
+
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [newPost, setNewPost] = useState({ description: "" });
+  const [newPost, setNewPost] = useState({ ...intialNewPost });
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState({ location: "", interest: "" });
   const [changeInPosts, setChangeInPosts] = useState(false);
   const [editor, setEditor] = useState(false);
-  const [editForm, setEditForm] = useState("");
-
+  const [editForm, setEditForm] = useState({ ...intialNewPost });
   const [cities, setCities] = useState([
     { name: "Amsterdam", id: "Amsterdam" },
     { name: "London", id: "London" },
     { name: "Stockholm", id: "Stockholm" },
     { name: "Tel Aviv", id: "Telaviv" },
-    { name: "All", id: "all" },
+    { name: "All", id: "" },
+    { name: "Choose a city", id: "chooseCity" },
   ]);
 
   useEffect(() => {}, [filter]);
@@ -97,18 +108,18 @@ export function PostsProvider({ children }) {
     setPosts([...postsArray]);
   }, []);
 
-  const getFilteredPosts = useCallback(async () => {
-    let tempFilteredPosts = [...posts];
-    console.log(posts);
-    tempFilteredPosts = tempFilteredPosts.filter(
-      (post) =>
-        (filter.location
-          ? filter.location === "all" || filter.location === post.city
-          : true) &&
-        (filter.interest ? filter.interest === post.interest : true)
-    );
-    setFilteredPosts([...tempFilteredPosts]);
-  }, [filter, posts]);
+  // const getFilteredPosts = useCallback(async () => {
+  //   let tempFilteredPosts = [...posts];
+  //   console.log(posts);
+  //   tempFilteredPosts = tempFilteredPosts.filter(
+  //     (post) =>
+  //       (filter.location
+  //         ? filter.location === "all" || filter.location === post.city
+  //         : true) &&
+  //       (filter.interest ? filter.interest === post.interest : true)
+  //   );
+  //   setFilteredPosts([...tempFilteredPosts]);
+  // }, [filter, posts]);
 
   // DELETE
   const deleteUserPost = async (postId) => {
@@ -116,38 +127,47 @@ export function PostsProvider({ children }) {
     await deleteDoc(docRef);
   };
 
-  
-  // async function getFilteredPosts() {
-  //   // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
-  //   const postsCollection = collection(db, "posts");
-  //   let q;
-  //   console.log("filter",filter);
-  //   if (filter.location ) {
-  //     console.log("location");
-  //     q = query(postsCollection, where("city", "==", filter.location));
-  //   }
-  //   if (filter.intrest ) {
-  //     console.log("intrest");
-  //     q = query(postsCollection,  where("intrest", "==", filter.intrest));
-  //   }
-  //   if (filter.location  && filter.intrest) {
-  //     console.log("intrest%location");
-  //     q = query(postsCollection, where("city", "==", filter.location), where("intrest", "==", filter.intrest));
-  //   }
+  const getFilteredPosts = useCallback(async () => {
+    const conds = [
+      filter.location ? where("city", "==", filter.location) : null,
+      filter.intrest ? where("intrest", "==", filter.intrest) : null,
+    ].filter((x) => x);
 
-  //  ;
-  //   const docSnap = await getDocs(q);
-  //   const postsArray = [];
-  //   docSnap.forEach((doc) => {
-  //     postsArray.push(doc.data());
-  //   });
-  //   console.log("postsArray", postsArray);
-  //   setFilteredPosts([...postsArray]);
-  // }
+    // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
+    const postsCollection = collection(db, "posts");
+    // let q = query(postsCollection);
+    console.log("filter", filter);
+    // if (filter.location) {
+    //   console.log("location");
+    //   q = query(postsCollection, where("city", "==", filter.location));
+    // }
+    // if (filter.intrest) {
+    //   console.log("intrest");
+    //   q = query(postsCollection, where("intrest", "==", filter.intrest));
+    // }
+    // if (filter.location && filter.intrest) {
+    //   console.log("intrest%location");
+    //   q = query(
+    //     postsCollection,
+    //     where("city", "==", filter.location),
+    //     where("intrest", "==", filter.intrest)
+    //   );
+    // }
+
+    const q = query(postsCollection, ...conds);
+
+    const docSnap = await getDocs(q);
+    const postsArray = [];
+    docSnap.forEach((doc) => {
+      postsArray.push(doc.data());
+    });
+    console.log("postsArray", postsArray);
+    setFilteredPosts([...postsArray]);
+  }, [filter]);
 
   // UPDATE/PUT (SET)
   const editUserPost = async (editedPost) => {
-    console.log("editedPost.id",editedPost);
+    console.log("editedPost.id", editedPost);
     const docRef = doc(db, "posts", editedPost.id);
     await setDoc(docRef, {
       ...editedPost,

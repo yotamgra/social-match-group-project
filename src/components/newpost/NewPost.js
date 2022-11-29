@@ -187,8 +187,11 @@ const NewPost = () => {
             >
               {cities &&
                 cities.map((city) => {
+                  if(city.id==="chooseCity"){
+                    
+                  }
                   return (
-                    <MenuItem value={city.id} key={city.id}>
+                    <MenuItem value={city.id} key={city.id} >
                       {city.name}
                     </MenuItem>
                   );
