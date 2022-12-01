@@ -27,6 +27,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { usePosts } from "../../contexts/PostsContext";
 import { useNavigate } from "react-router-dom";
 import PostButtons from "./PostButtons";
+import PostChips from "./PostChips";
 
 function PresentPosts({ posts }) {
   const navigate = useNavigate();
@@ -110,83 +111,52 @@ function PresentPosts({ posts }) {
               <CardContent>
                 <Typography paragraph>{post.description}</Typography>
               </CardContent>
-
               {currentUser.uid === post.user.userId && (
                 <>
-                  <Tooltip title="Delete" placement="top">
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => {
-                        deleteUserPost(post.id);
-
-                        setChangeInPosts(true);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Edit" placement="top">
-                    <IconButton
-                      aria-label="edit"
-                      onClick={() => {
-                        setChangeInPosts(true);
-                        setEditor(true);
-                        setEditForm({ ...post });
-                        navigate("/new-post");
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Box>
-                  {expanded[index] ? (
-                    <PostButtons
-                      post={post}
-                      index={index}
-                      expanded={expanded}
-                      setExpanded={setExpanded}
-                    />
-                  ) : (
-                    <></>
-                  )}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {expanded[index] ? (
+                      <>
+                        <PostButtons
+                          post={post}
+                          index={index}
+                          expanded={expanded}
+                          setExpanded={setExpanded}
+                        />
+                        <PostChips post={post} />
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                 </>
-              )}
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box>
-                  {" "}
-                  {expanded[index] && currentUser.uid !== post.user.userId ? (
+              )}{" "}
+              {expanded[index] && currentUser.uid !== post.user.userId ? (
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
                     <PostButtons
                       post={post}
                       index={index}
                       expanded={expanded}
                       setExpanded={setExpanded}
                     />
-                  ) : (
-                    <></>
-                  )}
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Chip
-                    variant="outlined"
-                    label={post.level}
-                    // sx={{ mr: 1, float: "right" }}
-                  />
-                  <Chip
-                    color="warning"
-                    variant="outlined"
-                    label={post.interest}
-                    // sx={{ float: "right" }}
-                  />
-                </Box>
-              </Box>
+                    <PostChips post={post} />
+                  </Box>
+                </>
+              ) : (
+                <></>
+              )}
             </Collapse>
           </Card>
         </Container>
