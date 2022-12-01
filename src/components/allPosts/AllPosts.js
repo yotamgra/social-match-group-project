@@ -24,7 +24,7 @@ const AllPosts = () => {
   useEffect(() => {
     getFilteredPosts();
     //getFiltered();
-  }, [getFilteredPosts]);
+  }, [getFilteredPosts, changeInPosts]);
 
   // console.log("isFiltered", isFiltered);
   console.log("filteredPosts", filteredPosts);

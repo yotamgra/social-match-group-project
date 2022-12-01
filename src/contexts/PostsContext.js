@@ -159,7 +159,7 @@ export function PostsProvider({ children }) {
     const docSnap = await getDocs(q);
     const postsArray = [];
     docSnap.forEach((doc) => {
-      postsArray.push(doc.data());
+      postsArray.push({ ...doc.data(), id: doc.id });
     });
     console.log("postsArray", postsArray);
     setFilteredPosts([...postsArray]);
@@ -167,7 +167,7 @@ export function PostsProvider({ children }) {
 
   // UPDATE/PUT (SET)
   const editUserPost = async (editedPost) => {
-    console.log("editedPost.id", editedPost);
+    console.log("editedPost.id", editedPost.id);
     const docRef = doc(db, "posts", editedPost.id);
     await setDoc(docRef, {
       ...editedPost,

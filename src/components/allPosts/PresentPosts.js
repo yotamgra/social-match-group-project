@@ -14,17 +14,20 @@ import {
   CardActions,
   FilledInput,
   Tooltip,
+  Box,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { Container } from "@mui/system";
 import { useAuth } from "../../contexts/AuthContext";
 import { usePosts } from "../../contexts/PostsContext";
 import { useNavigate } from "react-router-dom";
+import PostButtons from "./PostButtons";
+import PostChips from "./PostChips";
 
 function PresentPosts({ posts }) {
   const navigate = useNavigate();
@@ -33,9 +36,10 @@ function PresentPosts({ posts }) {
   const {
     deleteUserPost,
     setChangeInPosts,
+    changeInPost,
     setEditor,
     setEditForm,
-    editUserPost
+    editUserPost,
   } = usePosts();
 
   const ExpandMore = styled((props) => {
@@ -49,7 +53,7 @@ function PresentPosts({ posts }) {
     }),
   }));
 
-  useEffect(() => {}, [posts]);
+  // useEffect(() => {}, [posts, changeInPost]);
 
   return posts.map((post, index) => {
     expanded.push(false);
@@ -79,22 +83,27 @@ function PresentPosts({ posts }) {
                 {post.title}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-              <IconButton>
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton>
-                <EmailIcon />
-              </IconButton>
-              <IconButton onClick={()=>{
-                const participantsTempArray = [...post.participants]
-                participantsTempArray.push(currentUser.uid)
-                editUserPost({...post, participants: [...participantsTempArray]})
-              }}>
-                <AddIcon /> Apply
-              </IconButton>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {!expanded[index] ? (
+                <PostButtons
+                  post={post}
+                  index={index}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
+                />
+              ) : (
+                <></>
+              )}
               <ExpandMore
                 expand={expanded[index]}
+                sx={{ float: "right" }}
                 onClick={() => {
                   const array = [...expanded];
                   array[index] = !array[index];
@@ -105,45 +114,56 @@ function PresentPosts({ posts }) {
               >
                 <ExpandMoreIcon />
               </ExpandMore>
-            </CardActions>
+            </Box>
             <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography paragraph>{post.description}</Typography>
               </CardContent>
               {currentUser.uid === post.user.userId && (
                 <>
-                  <Tooltip title="Delete" placement="top">
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => {
-                        deleteUserPost(post.id);
-
-                        setChangeInPosts(true);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Edit" placement="top">
-                    <IconButton
-                      aria-label="edit"
-                      onClick={() => {
-                        setChangeInPosts(true);
-                        setEditor(true);
-                        setEditForm({ ...post });
-                        navigate("/new-post");
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Chip variant="outlined" sx={{ mr: 1 }} label={post.level} />
-                  <Chip
-                    color="warning"
-                    variant="outlined"
-                    label={post.interest}
-                  />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {expanded[index] ? (
+                      <>
+                        <PostButtons
+                          post={post}
+                          index={index}
+                          expanded={expanded}
+                          setExpanded={setExpanded}
+                        />
+                        <PostChips post={post} />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </>
+              )}{" "}
+              {expanded[index] && currentUser.uid !== post.user.userId ? (
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PostButtons
+                      post={post}
+                      index={index}
+                      expanded={expanded}
+                      setExpanded={setExpanded}
+                    />
+                    <PostChips post={post} />
+                  </Box>
+                </>
+              ) : (
+                <></>
               )}
             </Collapse>
           </Card>
@@ -155,3 +175,8 @@ function PresentPosts({ posts }) {
 
 export default PresentPosts;
 
+{
+  /* <PostButtons post={post} index={index} expanded={expanded} setExpanded={setExpanded} /> */
+}
+
+// sx={{display: "flex", flexDirection: "row"}}
