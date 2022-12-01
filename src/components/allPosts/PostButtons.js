@@ -30,33 +30,41 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
       <IconButton>
         <EmailIcon />
       </IconButton>
-      {expanded[index]  ? (
+      {expanded[index] ? (
         <>
-          <Tooltip title="Delete" placement="top">
-            <IconButton
-              aria-label="delete"
-              onClick={() => {
-                deleteUserPost(post.id);
+          {currentUser.uid === post.user.userId ? (
+            <>
+              {" "}
+              <Tooltip title="Delete" placement="top">
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    deleteUserPost(post.id);
 
-                setChangeInPosts(true);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit" placement="top">
-            <IconButton
-              aria-label="edit"
-              onClick={() => {
-                setChangeInPosts(true);
-                setEditor(true);
-                setEditForm({ ...post });
-                navigate("/new-post");
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
+                    setChangeInPosts(true);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit" placement="top">
+                <IconButton
+                  aria-label="edit"
+                  onClick={() => {
+                    setChangeInPosts(true);
+                    setEditor(true);
+                    setEditForm({ ...post });
+                    navigate("/new-post");
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <></>
+          )}
+
           <IconButton
             onClick={() => {
               const participantsTempArray = [...post.participants];
@@ -67,7 +75,7 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
               });
             }}
           >
-            <AddIcon /> Apply
+            <AddIcon /> APPLY
           </IconButton>
         </>
       ) : (
