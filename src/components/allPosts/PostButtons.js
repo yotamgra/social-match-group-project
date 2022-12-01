@@ -30,7 +30,7 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
       <IconButton>
         <EmailIcon />
       </IconButton>
-      {expanded[index]  ? (
+      {expanded[index] ? (
         <>
           <Tooltip title="Delete" placement="top">
             <IconButton
@@ -57,18 +57,20 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          <IconButton
-            onClick={() => {
-              const participantsTempArray = [...post.participants];
-              participantsTempArray.push(currentUser.uid);
-              editUserPost({
-                ...post,
-                participants: [...participantsTempArray],
-              });
-            }}
-          >
-            <AddIcon /> Apply
-          </IconButton>
+          {currentUser.uid !== post.user.userId && (
+            <IconButton
+              onClick={() => {
+                const participantsTempArray = [...post.participants];
+                participantsTempArray.push(currentUser.uid);
+                editUserPost({
+                  ...post,
+                  participants: [...participantsTempArray],
+                });
+              }}
+            >
+              <AddIcon /> Apply
+            </IconButton>
+          )}
         </>
       ) : (
         <></>
