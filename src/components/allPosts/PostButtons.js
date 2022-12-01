@@ -32,45 +32,51 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
       </IconButton>
       {expanded[index] ? (
         <>
-          <Tooltip title="Delete" placement="top">
-            <IconButton
-              aria-label="delete"
-              onClick={() => {
-                deleteUserPost(post.id);
+          {currentUser.uid === post.user.userId ? (
+            <>
+              {" "}
+              <Tooltip title="Delete" placement="top">
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    deleteUserPost(post.id);
 
-                setChangeInPosts(true);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit" placement="top">
-            <IconButton
-              aria-label="edit"
-              onClick={() => {
-                setChangeInPosts(true);
-                setEditor(true);
-                setEditForm({ ...post });
-                navigate("/new-post");
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          {currentUser.uid !== post.user.userId && (
-            <IconButton
-              onClick={() => {
-                const participantsTempArray = [...post.participants];
-                participantsTempArray.push(currentUser.uid);
-                editUserPost({
-                  ...post,
-                  participants: [...participantsTempArray],
-                });
-              }}
-            >
-              <AddIcon /> Apply
-            </IconButton>
+                    setChangeInPosts(true);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit" placement="top">
+                <IconButton
+                  aria-label="edit"
+                  onClick={() => {
+                    setChangeInPosts(true);
+                    setEditor(true);
+                    setEditForm({ ...post });
+                    navigate("/new-post");
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <></>
           )}
+
+          <IconButton
+            onClick={() => {
+              const participantsTempArray = [...post.participants];
+              participantsTempArray.push(currentUser.uid);
+              editUserPost({
+                ...post,
+                participants: [...participantsTempArray],
+              });
+            }}
+          >
+            <AddIcon /> APPLY
+          </IconButton>
         </>
       ) : (
         <></>

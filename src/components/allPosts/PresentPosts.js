@@ -124,8 +124,9 @@ function PresentPosts({ posts }) {
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: "space-between",
+                      justifyContent: { sm: "space-between", xs: "center" },
                       alignItems: "center",
+                      flexWrap: "wrap",
                     }}
                   >
                     {expanded[index] ? (
@@ -149,8 +150,9 @@ function PresentPosts({ posts }) {
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: "space-between",
+                      justifyContent: { sm: "space-between", xs: "center" },
                       alignItems: "center",
+                      flexWrap: "wrap",
                     }}
                   >
                     <PostButtons

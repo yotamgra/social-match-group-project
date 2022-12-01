@@ -4,6 +4,12 @@ import React from 'react'
 function PostChips({post}) {
   return (
     <Box sx={{ display: "flex", alignItems: "center", mr:"10px" }}>
+
+                  <Chip
+                    variant="outlined"
+                    label={`spots: 2  / ${post.spots}  `}
+                    // sx={{ mr: 1, float: "right" }}
+                  /> 
                   <Chip
                     variant="outlined"
                     label={post.level}
