@@ -89,7 +89,6 @@ function PresentPosts({ posts }) {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                
               }}
             >
               {!expanded[index] ? (
@@ -116,7 +115,7 @@ function PresentPosts({ posts }) {
                 <ExpandMoreIcon />
               </ExpandMore>
             </Box>
-            <Collapse  in={expanded[index]} timeout="auto" unmountOnExit>
+            <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography paragraph>{post.description}</Typography>
               </CardContent>
@@ -125,9 +124,9 @@ function PresentPosts({ posts }) {
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: {sm: "space-between", xs:"center"},
+                      justifyContent: { sm: "space-between", xs: "center" },
                       alignItems: "center",
-                      flexWrap: "wrap"
+                      flexWrap: "wrap",
                     }}
                   >
                     {expanded[index] ? (
@@ -151,9 +150,9 @@ function PresentPosts({ posts }) {
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: {sm: "space-between", xs:"center"},
+                      justifyContent: { sm: "space-between", xs: "center" },
                       alignItems: "center",
-                      flexWrap: "wrap"
+                      flexWrap: "wrap",
                     }}
                   >
                     <PostButtons
