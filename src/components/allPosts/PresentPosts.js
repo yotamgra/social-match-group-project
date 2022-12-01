@@ -84,29 +84,37 @@ function PresentPosts({ posts }) {
               </Typography>
             </CardContent>
 
-            {!expanded[index] ? (
-              <PostButtons
-                post={post}
-                index={index}
-                expanded={expanded}
-                setExpanded={setExpanded}
-              />
-            ) : (
-              <></>
-            )}
-            <ExpandMore
-              expand={expanded[index]}
-              sx={{ float: "right" }}
-              onClick={() => {
-                const array = [...expanded];
-                array[index] = !array[index];
-                setExpanded(array);
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
-              aria-expanded={expanded[index]}
-              aria-label="show more"
             >
-              <ExpandMoreIcon />
-            </ExpandMore>
+              {!expanded[index] ? (
+                <PostButtons
+                  post={post}
+                  index={index}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
+                />
+              ) : (
+                <></>
+              )}
+              <ExpandMore
+                expand={expanded[index]}
+                sx={{ float: "right" }}
+                onClick={() => {
+                  const array = [...expanded];
+                  array[index] = !array[index];
+                  setExpanded(array);
+                }}
+                aria-expanded={expanded[index]}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </Box>
             <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography paragraph>{post.description}</Typography>

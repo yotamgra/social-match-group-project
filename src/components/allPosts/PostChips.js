@@ -3,7 +3,7 @@ import React from 'react'
 
 function PostChips({post}) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center", mr:"10px" }}>
                   <Chip
                     variant="outlined"
                     label={post.level}
