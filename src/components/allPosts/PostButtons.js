@@ -51,7 +51,7 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
                 <IconButton
                   aria-label="edit"
                   onClick={() => {
-                    setChangeInPosts(true);
+                    // setChangeInPosts(true);
                     setEditor(true);
                     setEditForm({ ...post });
                     navigate("/new-post");
@@ -64,19 +64,50 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
           ) : (
             <></>
           )}
-
-          <IconButton
-            onClick={() => {
-              const participantsTempArray = [...post.participants];
-              participantsTempArray.push(currentUser.uid);
-              editUserPost({
-                ...post,
-                participants: [...participantsTempArray],
-              });
-            }}
-          >
-            <AddIcon /> APPLY
-          </IconButton>
+          {currentUser.uid !== post.user.userId ? (
+            <>
+              {post.participants.includes(currentUser.uid) ? (
+                <IconButton
+                  onClick={() => {
+                    setChangeInPosts(true);
+                    let participantsTempArray = [...post.participants];
+                    const participantToDelete = currentUser.uid;
+                    // const index = participantsTempArray.indexOf(participantToDelete);
+                    // participantsTempArray.splice(index, 1);
+                    participantsTempArray = participantsTempArray.filter(
+                      (participant) => {
+                        console.log("participant",participant);
+                        console.log("participantToDelete",participantToDelete);
+                        return participant !== participantToDelete}
+                    );
+                    console.log("participantsTempArray",participantsTempArray);
+                    editUserPost({
+                      ...post,
+                      participants: [...participantsTempArray],
+                    });
+                  }}
+                >
+                  REMOVE
+                </IconButton>
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    setChangeInPosts(true);
+                    const participantsTempArray = [...post.participants];
+                    participantsTempArray.push(currentUser.uid);
+                    editUserPost({
+                      ...post,
+                      participants: [...participantsTempArray],
+                    });
+                  }}
+                >
+                  APPLY
+                </IconButton>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         <></>
@@ -86,3 +117,7 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
 };
 
 export default PostButtons;
+
+{
+  /* <AddIcon /> */
+}
