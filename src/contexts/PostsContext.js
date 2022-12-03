@@ -52,9 +52,8 @@ export function PostsProvider({ children }) {
     { name: "Amsterdam", id: "Amsterdam" },
     { name: "London", id: "London" },
     { name: "Stockholm", id: "Stockholm" },
-    { name: "Tel Aviv", id: "Telaviv" },
-    { name: "All", id: "" },
-    { name: "Choose a city", id: "chooseCity" },
+    { name: "Tel Aviv", id: "Tel Aviv" },
+    { name: "All", id: "All cities" },
   ]);
 
   useEffect(() => {}, [filter]);
