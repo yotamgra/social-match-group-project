@@ -49,14 +49,10 @@ const NewPost = () => {
     spots: 15,
     city: "",
     date: "",
-    level: "",
+    level: "All levels",
     interest: "",
-    participants:[]
+    participants: [],
   };
-
-  
- 
-  
 
   useEffect(() => {
     setNewPost({ ...intialNewPost });
@@ -64,9 +60,6 @@ const NewPost = () => {
     if (editor) {
       setChangeInPosts(true);
       setNewPost({ ...editForm });
-     
-     
-      
     } else {
       setNewPost({ ...intialNewPost });
     }
@@ -115,9 +108,6 @@ const NewPost = () => {
     );
 
   console.log("newpost", newPost);
- 
-  
-  
 
   return (
     <>
@@ -166,7 +156,7 @@ const NewPost = () => {
               />
             </CardContent>
 
-            <InterestsTags editInterest={editor?editForm.interest:""} />
+            <InterestsTags editInterest={editor ? editForm.interest : ""} />
             <InputLabel
               id="select-city"
               sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}
@@ -187,11 +177,10 @@ const NewPost = () => {
             >
               {cities &&
                 cities.map((city) => {
-                  if(city.id==="chooseCity"){
-                    
+                  if (city.id === "chooseCity") {
                   }
                   return (
-                    <MenuItem value={city.id} key={city.id} >
+                    <MenuItem value={city.id} key={city.id}>
                       {city.name}
                     </MenuItem>
                   );
@@ -225,7 +214,6 @@ const NewPost = () => {
             </InputLabel>
             <RadioGroup
               onChange={(event) => {
-                
                 setNewPost({ ...newPost, level: event.target.value });
               }}
               name="level"
@@ -278,9 +266,10 @@ const NewPost = () => {
                   <Slider
                     valueLabelDisplay="on"
                     color="warning"
-                    value={typeof newPost.spots === "number" ? newPost.spots : 0}
+                    value={
+                      typeof newPost.spots === "number" ? newPost.spots : 0
+                    }
                     onChange={(event, newValue) => {
-                     
                       setNewPost({ ...newPost, spots: parseInt(newValue) });
                     }}
                   />
