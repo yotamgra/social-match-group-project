@@ -38,7 +38,7 @@ const Filter = () => {
           <Box>
             <FormControl sx={{ m: 1, minWidth: 130 }} size="small">
               <InputLabel
-                color="warning"
+                color="success"
                 sx={{ backgroundColor: "white" }}
                 shrink
                 id="interest"
