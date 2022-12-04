@@ -15,9 +15,9 @@ import {
   CircularProgress,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { processFirebaseErrors } from "../../errors";
 import { Container } from "react-bootstrap";
 
@@ -29,7 +29,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const { signup, currentUser, createUserInfo } = useAuth();
+  const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -67,9 +67,21 @@ const Signup = () => {
       setError(processFirebaseErrors(err.message));
     }
   }
-  useEffect(() => {}, []);
 
-  if (loading) return <Container sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "200px", width:"100%" }}><CircularProgress  /></Container>;
+  if (loading)
+    return (
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "200px",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    );
 
   return (
     <>

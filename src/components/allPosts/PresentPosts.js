@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 
 import {
@@ -9,38 +9,18 @@ import {
   Collapse,
   Avatar,
   IconButton,
-  CardMedia,
   Typography,
-  CardActions,
-  FilledInput,
-  Tooltip,
   Box,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EmailIcon from "@mui/icons-material/Email";
-import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
 import { Container } from "@mui/system";
 import { useAuth } from "../../contexts/AuthContext";
-import { usePosts } from "../../contexts/PostsContext";
-import { useNavigate } from "react-router-dom";
 import PostButtons from "./PostButtons";
 import PostChips from "./PostChips";
 
 function PresentPosts({ posts }) {
-  const navigate = useNavigate();
   const [expanded, setExpanded] = useState([]);
   const { currentUser } = useAuth();
-  const {
-    deleteUserPost,
-    setChangeInPosts,
-    changeInPost,
-    setEditor,
-    setEditForm,
-    editUserPost,
-  } = usePosts();
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -52,8 +32,6 @@ function PresentPosts({ posts }) {
       duration: theme.transitions.duration.shortest,
     }),
   }));
-
-  // useEffect(() => {}, [posts, changeInPost]);
 
   return posts.map((post, index) => {
     expanded.push(false);
@@ -175,8 +153,3 @@ function PresentPosts({ posts }) {
 
 export default PresentPosts;
 
-{
-  /* <PostButtons post={post} index={index} expanded={expanded} setExpanded={setExpanded} /> */
-}
-
-// sx={{display: "flex", flexDirection: "row"}}

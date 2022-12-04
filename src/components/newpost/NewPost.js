@@ -16,10 +16,9 @@ import {
   Select,
   Slider,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePosts } from "../../contexts/PostsContext";
 import Navbar from "../navbar/Navbar";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +38,6 @@ const NewPost = () => {
     editForm,
     editUserPost,
     setChangeInPosts,
-    setEditForm,
   } = usePosts();
   const navigate = useNavigate();
 
@@ -56,14 +54,13 @@ const NewPost = () => {
 
   useEffect(() => {
     setNewPost({ ...intialNewPost });
-    console.log("editor", editor);
     if (editor) {
       setChangeInPosts(true);
       setNewPost({ ...editForm });
     } else {
       setNewPost({ ...intialNewPost });
     }
-  }, []);
+  }, [editForm, editor, intialNewPost, setChangeInPosts, setNewPost]);
 
   const handleBlur = () => {
     if (newPost.spots < 0) {
@@ -107,7 +104,7 @@ const NewPost = () => {
       </Container>
     );
 
-  console.log("newpost", newPost);
+
 
   return (
     <>

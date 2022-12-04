@@ -7,9 +7,6 @@ import { InputLabel } from "@mui/material";
 const InterestsTags = ({ editInterest }) => {
   const { newPost, setNewPost, editor, setEditor } = usePosts();
 
-  console.log("editInterest",editInterest);
-  console.log("newPost.interest",newPost.interest);
-
   return (
     <>
       <InputLabel id="date" sx={{ width: 300, mb: 0, ml: "auto", mr: "auto" }}>

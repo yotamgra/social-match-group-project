@@ -5,19 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-  doc,
-  getDoc,
-  getDocs,
-  where,
-} from "firebase/firestore";
-import { async } from "@firebase/util";
+import { addDoc, collection } from "firebase/firestore";
 
 const AuthContext = React.createContext();
 
@@ -28,13 +16,8 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
- 
-  
-  
 
-  
-
-  async function signup( email, password, name, gender,phone) {
+  async function signup(email, password, name, gender, phone) {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -47,10 +30,9 @@ export function AuthProvider({ children }) {
       userId: userCredential.user.uid,
       gender,
       phone,
-      email
+      email,
     });
   }
- 
 
   async function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -73,12 +55,6 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
-  
-    // createNewPost,
-    // newPost,
-    // setNewPost,
-    // getAllPosts,
-    // posts,
   };
   return (
     <AuthContext.Provider value={value}>

@@ -1,10 +1,7 @@
-import { ExpandMore } from "@mui/icons-material";
 import { CardActions, IconButton, Tooltip } from "@mui/material";
 import { usePosts } from "../../contexts/PostsContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import EmailIcon from "@mui/icons-material/Email";
-import AddIcon from "@mui/icons-material/Add";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAuth } from "../../contexts/AuthContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,7 +13,6 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
   const {
     deleteUserPost,
     setChangeInPosts,
-    changeInPost,
     setEditor,
     setEditForm,
     editUserPost,
@@ -51,7 +47,7 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
                 <IconButton
                   aria-label="edit"
                   onClick={() => {
-                    // setChangeInPosts(true);
+                    setChangeInPosts(true);
                     setEditor(true);
                     setEditForm({ ...post });
                     navigate("/new-post");
@@ -72,15 +68,11 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
                     setChangeInPosts(true);
                     let participantsTempArray = [...post.participants];
                     const participantToDelete = currentUser.uid;
-                    // const index = participantsTempArray.indexOf(participantToDelete);
-                    // participantsTempArray.splice(index, 1);
+
                     participantsTempArray = participantsTempArray.filter(
-                      (participant) => {
-                        console.log("participant",participant);
-                        console.log("participantToDelete",participantToDelete);
-                        return participant !== participantToDelete}
+                      (participant) => participant !== participantToDelete
                     );
-                    console.log("participantsTempArray",participantsTempArray);
+
                     editUserPost({
                       ...post,
                       participants: [...participantsTempArray],
@@ -117,7 +109,3 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
 };
 
 export default PostButtons;
-
-{
-  /* <AddIcon /> */
-}
