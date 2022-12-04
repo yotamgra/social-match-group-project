@@ -3,13 +3,14 @@ import React from "react";
 
 function PostChips({ post }) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center", mr: "10px" }}>
+    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
       <Chip
-        color="warning"
+        sx={{ mr: 1 }}
+        color={post.spots - post.participants.length > 0 ? "success" : "error"}
         variant="outlined"
-        label={`${post.spots - post.participants.length}  / ${post.spots}  `}
+        label={`${post.participants.length}  / ${post.spots}  `}
       />
-      <Chip variant="outlined" label={post.level} />
+      <Chip sx={{ mr: 1 }} variant="outlined" label={post.level} />
       <Chip color="warning" variant="outlined" label={post.interest} />
     </Box>
   );

@@ -102,6 +102,7 @@ function PresentPosts({ posts }) {
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: "column",
                       justifyContent: "space-between",
                       alignItems: "center",
                     }}
@@ -114,6 +115,7 @@ function PresentPosts({ posts }) {
                           expanded={expanded}
                           setExpanded={setExpanded}
                         />
+
                         <PostChips post={post} />
                       </>
                     ) : (
@@ -127,6 +129,7 @@ function PresentPosts({ posts }) {
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: "column",
                       justifyContent: "space-between",
                       alignItems: "center",
                     }}
@@ -137,6 +140,7 @@ function PresentPosts({ posts }) {
                       expanded={expanded}
                       setExpanded={setExpanded}
                     />
+                    <br />
                     <PostChips post={post} />
                   </Box>
                 </>
@@ -152,4 +156,3 @@ function PresentPosts({ posts }) {
 }
 
 export default PresentPosts;
-

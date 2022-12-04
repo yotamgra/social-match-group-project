@@ -27,7 +27,6 @@ const Dashboard = () => {
   return (
     <>
       <Navbar />
-      {/* <Filter /> */}
       <Container maxWidth="sm">
         <Card
           sx={{
@@ -72,6 +71,8 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </Container>
+      <Filter />
+
       <AllPosts />
     </>
   );

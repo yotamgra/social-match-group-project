@@ -23,7 +23,9 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
       <IconButton>
         <FavoriteIcon />
       </IconButton>
-      <IconButton>
+      <IconButton
+        onClick={() => (window.location = `mailto:${post.user.email}`)}
+      >
         <EmailIcon />
       </IconButton>
       {expanded[index] ? (
