@@ -34,7 +34,7 @@ const AllPosts = () => {
           fontSize: "1.5rem",
         }}
       >
-        OOPS... No posts found
+        OOPS... No posts were found
       </Typography>
     );
   }
