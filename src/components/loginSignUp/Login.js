@@ -8,19 +8,21 @@ import {
   Button,
   Typography,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link, useNavigate } from "react-router-dom";
-import Signup from "./Signup";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { processFirebaseErrors } from "../../errors";
+import { Container } from "react-bootstrap";
 
 const Login = ({ handleTabChange }) => {
-  let emailRef = useRef();
-  let passwordRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
-  const { login, currentUser } = useAuth();
+  const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,21 +39,12 @@ const Login = ({ handleTabChange }) => {
     margin: "8px 0",
   };
 
-  function handleEmailChange(e) {
-    emailRef = e.target.value;
-    console.log(emailRef);
-  }
-
-  function handlePasswordChange(e) {
-    passwordRef = e.target.value;
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
       setLoading(true);
-      await login(emailRef, passwordRef);
+      await login(email, password);
       setLoading(false);
       navigate("/");
     } catch (err) {
@@ -59,6 +52,21 @@ const Login = ({ handleTabChange }) => {
       setError(processFirebaseErrors(err.message));
     }
   }
+
+  if (loading)
+    return (
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "200px",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    );
 
   return (
     <Grid>
@@ -78,7 +86,7 @@ const Login = ({ handleTabChange }) => {
             fullWidth
             required
             type="email"
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             label="Password"
@@ -87,7 +95,7 @@ const Login = ({ handleTabChange }) => {
             variant="standard"
             fullWidth
             required
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox defaultChecked />}

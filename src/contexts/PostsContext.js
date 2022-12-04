@@ -62,7 +62,6 @@ export function PostsProvider({ children }) {
     // getCurrentUserPosts();
     const userInfo = await getCurrentUserInfo();
     try {
-      console.log("userInfo", userInfo[0]);
     } catch (err) {
       console.log(err);
     }
@@ -80,18 +79,15 @@ export function PostsProvider({ children }) {
     docSnap.forEach((doc) => {
       postsArray.push(doc.data());
     });
-    console.log("user posts", postsArray);
   }
 
   const getCurrentUserInfo = useCallback(async () => {
-    console.log("currentUser.uid", currentUser.uid);
     const q = query(usersCollection, where("userId", "==", currentUser.uid));
     const docSnap = await getDocs(q);
     const userArray = [];
     docSnap.forEach((doc) => {
       userArray.push(doc.data());
     });
-    console.log("user ", userArray);
 
     return userArray;
   }, [currentUser]);
@@ -107,19 +103,6 @@ export function PostsProvider({ children }) {
     setPosts([...postsArray]);
   }, []);
 
-  // const getFilteredPosts = useCallback(async () => {
-  //   let tempFilteredPosts = [...posts];
-  //   console.log(posts);
-  //   tempFilteredPosts = tempFilteredPosts.filter(
-  //     (post) =>
-  //       (filter.location
-  //         ? filter.location === "all" || filter.location === post.city
-  //         : true) &&
-  //       (filter.interest ? filter.interest === post.interest : true)
-  //   );
-  //   setFilteredPosts([...tempFilteredPosts]);
-  // }, [filter, posts]);
-
   // DELETE
   const deleteUserPost = async (postId) => {
     const docRef = doc(db, "posts", postId);
@@ -132,26 +115,7 @@ export function PostsProvider({ children }) {
       filter.intrest ? where("intrest", "==", filter.intrest) : null,
     ].filter((x) => x);
 
-    // ((filter.intrest !== "")??(where("intrest", "==", filter.intrest)):())
     const postsCollection = collection(db, "posts");
-    // let q = query(postsCollection);
-    console.log("filter", filter);
-    // if (filter.location) {
-    //   console.log("location");
-    //   q = query(postsCollection, where("city", "==", filter.location));
-    // }
-    // if (filter.intrest) {
-    //   console.log("intrest");
-    //   q = query(postsCollection, where("intrest", "==", filter.intrest));
-    // }
-    // if (filter.location && filter.intrest) {
-    //   console.log("intrest%location");
-    //   q = query(
-    //     postsCollection,
-    //     where("city", "==", filter.location),
-    //     where("intrest", "==", filter.intrest)
-    //   );
-    // }
 
     const q = query(postsCollection, orderBy("publishTime", "desc"), ...conds);
     const docSnap = await getDocs(q);
@@ -159,14 +123,12 @@ export function PostsProvider({ children }) {
     docSnap.forEach((doc) => {
       postsArray.push({ ...doc.data(), id: doc.id });
     });
-    console.log("postsArray", postsArray);
+
     setFilteredPosts([...postsArray]);
   }, [filter]);
 
   // UPDATE/PUT (SET)
   const editUserPost = async (editedPost) => {
-    console.log("editedPost.id", editedPost.id);
-    console.log(editedPost);
     const docRef = doc(db, "posts", editedPost.id);
     await setDoc(docRef, {
       ...editedPost,

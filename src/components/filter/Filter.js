@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,8 +8,7 @@ import { interestsOptions } from "../newpost/Interest";
 import { Autocomplete, TextField } from "@mui/material";
 
 const Filter = () => {
-  const { cities, filter, setFilter, posts, filteredPosts, setFilteredPosts } =
-    usePosts();
+  const { cities, filter, setFilter } = usePosts();
 
   return (
     <>
