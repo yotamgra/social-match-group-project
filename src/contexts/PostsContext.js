@@ -107,7 +107,7 @@ export function PostsProvider({ children }) {
 
   const getFilteredPosts = useCallback(async () => {
     let tempFilteredPosts = [...posts];
-    console.log(posts);
+
     tempFilteredPosts = tempFilteredPosts.filter(
       (post) =>
         (filter.location
