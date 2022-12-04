@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 
 import { usePosts } from "../../contexts/PostsContext";
@@ -26,7 +27,6 @@ const AllPosts = () => {
   }
   return (
     <>
-      <h2>All Posts</h2>
       <PresentPosts posts={filteredPosts} />
     </>
   );
