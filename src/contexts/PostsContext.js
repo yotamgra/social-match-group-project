@@ -111,7 +111,7 @@ export function PostsProvider({ children }) {
     tempFilteredPosts = tempFilteredPosts.filter(
       (post) =>
         (filter.location
-          ? filter.location === "all" || filter.location === post.city
+          ? filter.location === "All cities" || filter.location === post.city
           : true) &&
         (filter.interest ? filter.interest === post.interest : true)
     );

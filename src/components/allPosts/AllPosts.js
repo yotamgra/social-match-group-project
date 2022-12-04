@@ -23,7 +23,20 @@ const AllPosts = () => {
   }, [getFilteredPosts, changeInPosts]);
 
   if (filteredPosts.length === 0) {
-    return <h4>There aren't posts to present</h4>;
+    return (
+      <Typography
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: 10,
+          color: "#d32f2f",
+          fontWeight: 900,
+          fontSize: "1.5rem",
+        }}
+      >
+        OOPS... No posts found
+      </Typography>
+    );
   }
   return (
     <>
