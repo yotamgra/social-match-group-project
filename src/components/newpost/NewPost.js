@@ -60,7 +60,7 @@ const NewPost = () => {
     } else {
       setNewPost({ ...intialNewPost });
     }
-  }, [editForm, editor, intialNewPost, setChangeInPosts, setNewPost]);
+  }, []);
 
   const handleBlur = () => {
     if (newPost.spots < 0) {
@@ -103,8 +103,6 @@ const NewPost = () => {
         <CircularProgress />
       </Container>
     );
-
-
 
   return (
     <>
