@@ -84,19 +84,25 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
                   REMOVE
                 </IconButton>
               ) : (
-                <IconButton
-                  onClick={() => {
-                    setChangeInPosts(true);
-                    const participantsTempArray = [...post.participants];
-                    participantsTempArray.push(currentUser.uid);
-                    editUserPost({
-                      ...post,
-                      participants: [...participantsTempArray],
-                    });
-                  }}
-                >
-                  APPLY
-                </IconButton>
+                <>
+                  {post.participants.length < post.spots ? (
+                    <IconButton
+                      onClick={() => {
+                        setChangeInPosts(true);
+                        const participantsTempArray = [...post.participants];
+                        participantsTempArray.push(currentUser.uid);
+                        editUserPost({
+                          ...post,
+                          participants: [...participantsTempArray],
+                        });
+                      }}
+                    >
+                      APPLY
+                    </IconButton>
+                  ) : (
+                    <></>
+                  )}
+                </>
               )}
             </>
           ) : (
@@ -111,3 +117,6 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
 };
 
 export default PostButtons;
+
+
+
