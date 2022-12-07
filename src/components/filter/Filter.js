@@ -36,7 +36,7 @@ const Filter = () => {
           }}
         >
           <Box>
-            <FormControl sx={{ m: 1, minWidth: 130 }} size="small">
+            <FormControl sx={{ m: 1 }} size="small">
               <InputLabel
                 color="success"
                 sx={{ backgroundColor: "white" }}

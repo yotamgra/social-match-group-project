@@ -117,6 +117,3 @@ const PostButtons = ({ post, index, expanded, setExpanded }) => {
 };
 
 export default PostButtons;
-
-
-
