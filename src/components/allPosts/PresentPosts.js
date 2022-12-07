@@ -58,7 +58,8 @@ function PresentPosts({ posts }) {
             />
             <CardContent>
               <Typography sx={{ fontSize: 18 }} color="text.secondary">
-                {post.title}
+                {post.title} on {new Date(post.date).toUTCString().slice(5, 16)}
+                , {new Date(post.date).toUTCString().slice(17, 22)}
               </Typography>
             </CardContent>
 

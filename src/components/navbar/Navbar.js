@@ -27,9 +27,11 @@ const Navbar = () => {
     }
   }
 
+  console.log(currentUser);
+
   return (
     <AppBar
-      position="static"
+      position="sticky"
       color="warning"
       sx={{
         display: "flex",
@@ -47,10 +49,9 @@ const Navbar = () => {
         Social Match
       </Typography>
 
-      <Avatar
-        onClick={(e) => setOpen(true)}
-        sx={{ cursor: "pointer" }}
-      ></Avatar>
+      <Avatar onClick={(e) => setOpen(true)} sx={{ cursor: "pointer" }}>
+        {currentUser.email[0].toUpperCase()}
+      </Avatar>
       <Menu
         id="account-menu"
         open={open}
@@ -85,7 +86,7 @@ const Navbar = () => {
         }}
       >
         <MenuItem onClick={(e) => setOpen(false)}>
-          <Avatar /> My Profile
+          <Avatar> {currentUser.email[0].toUpperCase()}</Avatar> My Profile
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleLogout}>
